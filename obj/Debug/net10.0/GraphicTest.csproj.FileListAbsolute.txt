@@ -1,0 +1,4 @@
+C:\Csharp\GraphicTest\obj\Debug\net10.0\GraphicTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\Csharp\GraphicTest\obj\Debug\net10.0\GraphicTest.AssemblyInfoInputs.cache
+C:\Csharp\GraphicTest\obj\Debug\net10.0\GraphicTest.AssemblyInfo.cs
+C:\Csharp\GraphicTest\obj\Debug\net10.0\GraphicTest.csproj.CoreCompileInputs.cache
