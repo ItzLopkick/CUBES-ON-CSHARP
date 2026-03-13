@@ -20,37 +20,27 @@ public static class Program
 
 public class Okoshkatwo:Window
 {
-    public static void Iftouching(Rectangle player,double PlayerX,double PlayerY,double ScreenWidth,double ScreenHeight,double PlayerWidth)
-    {
-        if (PlayerX == ScreenWidth || PlayerX > ScreenWidth)
-        {
-            Canvas.SetLeft(player,ScreenHeight - PlayerWidth);
-        }
-        else if (PlayerX == 0 || PlayerX < 0)
-        {
-            Canvas.SetLeft(player,0);
-        }
-        else if (PlayerY == 0 || PlayerY > 0)
-        {
-            Canvas.SetTop(player,0);
-        }
-        else if (PlayerY == ScreenHeight || PlayerY < ScreenHeight)
-        {
-            Canvas.SetTop(player,ScreenHeight);
-        }
-    }
+    double meteorsvalue = 50;
+    List<Rectangle> meteors = new List<Rectangle>{};
     Rectangle player;
     double PlayerX;
     double PlayerY;
     double shirinaOkna;
     double vusotaOkna;
     double PlayerWidth;
+    double PlayerSpeed;
+    double PlayerHeight;
+    bool MoveUpFlag = false;
+    bool MoveRightFlag = false;
+    bool MoveDownFlag = false;
+    bool MoveLeftFlag = false;
+    bool ShiftFlag = false;
+    Random random = new Random();
     public Okoshkatwo()
     {
         shirinaOkna = this.Width;
         vusotaOkna = this.Height;
-        Random random = new Random();
-        MessageBox.Show("Version 1.1");
+        MessageBox.Show("Version 1.4");
         Title = "Squre";
         Width = 1000;
         Height = 1000;
@@ -65,16 +55,7 @@ public class Okoshkatwo:Window
         gcanvas.Children.Add(img);
         Canvas.SetLeft(img, 500);
         Canvas.SetTop(img, 500);
-
-        var squres = new List<Rectangle>
-        {
-            new Rectangle{Width = random.Next(100,250),Height = random.Next(100,250),Fill = Brushes.Red},
-            new Rectangle{Width = random.Next(100,250),Height = random.Next(100,250),Fill = Brushes.Red},
-            new Rectangle{Width = random.Next(100,250),Height = random.Next(100,250),Fill = Brushes.Red},
-            new Rectangle{Width = random.Next(100,250),Height = random.Next(100,250),Fill = Brushes.Red},
-            new Rectangle{Width = random.Next(100,250),Height = random.Next(100,250),Fill = Brushes.Red},
-            new Rectangle{Width = random.Next(100,250),Height = random.Next(100,250),Fill = Brushes.Red}
-        };
+        CreateMeteors(meteorsvalue);
         player = new Rectangle
         {
             Width = 100,
@@ -82,11 +63,13 @@ public class Okoshkatwo:Window
             Fill = Brushes.Green
         };
         PlayerWidth = player.Width;
+        PlayerHeight = player.Height;
+        PlayerSpeed = 5;
         gcanvas.Children.Add(player);
         Canvas.SetLeft(player, Width/2);
         Canvas.SetTop(player, Height/2);
 
-        foreach (Rectangle rect in squres)
+        foreach (Rectangle rect in meteors)
         {
             gcanvas.Children.Add(rect);
             Canvas.SetLeft(rect,random.Next(0,Convert.ToInt32(Width)));
@@ -98,24 +81,26 @@ public class Okoshkatwo:Window
         // Canvas.SetTop(sqaure,100);
 
         Content = gcanvas;
-        this.KeyDown += Controls;
+        this.KeyDown += HandlingKeysDown;
+        this.KeyUp += HandlingKeysUp;
         this.Focusable = true;
         this.Focus();
         Loaded += async (_,__) =>
         {
             await Task.Delay(3000);
             Canvas.SetLeft(img,-56667);
+            // Iftouching(player,PlayerX,PlayerY,shirinaOkna,vusotaOkna,PlayerWidth);
             while (1 == 1)
             {
-                Iftouching(player,PlayerX,PlayerY,shirinaOkna,vusotaOkna,PlayerWidth);
-                foreach (Rectangle rect in squres)
+                Controls();
+                foreach (Rectangle rect in meteors)
                 {
                     double squareX = Canvas.GetLeft(rect);
                     double squareY = Canvas.GetTop(rect);
                     squareY = squareY+10;
                     Canvas.SetTop(rect,squareY);
-                    double shirinaOkna = this.Width;
-                    double vusotaOkna = this.Height;
+                    shirinaOkna = this.ActualWidth-15;
+                    vusotaOkna = this.ActualHeight-38;
                     if (squareY > vusotaOkna)
                     {
                         int vusotaOknaInt = Convert.ToInt32(vusotaOkna);
@@ -135,45 +120,136 @@ public class Okoshkatwo:Window
         };
         
     }
-    void Controls(object Sender,KeyEventArgs event2)
+    void HandlingKeysUp(object Sender,KeyEventArgs event2)
     {
+        if (event2.Key == Key.Right)
+        {
+            MoveRightFlag = false;
+        }
+        if (event2.Key == Key.Up)
+        {
+            MoveUpFlag = false;
+        }
+        if (event2.Key == Key.Down)
+        {
+            MoveDownFlag = false;
+        }
         if (event2.Key == Key.Left)
+        {
+            MoveLeftFlag = false;
+        }
+        if (event2.Key == Key.LeftShift)
+        {
+            ShiftFlag = false;
+        }
+        event2.Handled = true;
+    }
+    void HandlingKeysDown(object Sender,KeyEventArgs event2)
+    {
+        if (event2.Key == Key.Right)
+        {
+            MoveRightFlag = true;
+        }
+        if (event2.Key == Key.Up)
+        {
+            MoveUpFlag = true;
+        }
+        if (event2.Key == Key.Down)
+        {
+            MoveDownFlag = true;
+        }
+        if (event2.Key == Key.Left)
+        {
+            MoveLeftFlag = true;
+        }
+        if (event2.Key == Key.LeftShift)
+        {
+            ShiftFlag = true;
+        }
+        event2.Handled = true;
+    }
+    void Controls()
+    {
+        if (ShiftFlag == true)
+        {
+            PlayerSpeed = 10;
+        }
+        else
+        {
+            PlayerSpeed = 5;
+        }
+        if (MoveLeftFlag == true)
         {
             Console.WriteLine("!left");
             PlayerX = Canvas.GetLeft(player);
-            PlayerY = Canvas.GetTop(player);
-            PlayerX = PlayerX-10;
+            if ((PlayerX - PlayerSpeed) < 0)
+            {
+                PlayerX = 0;
+                Console.WriteLine("!left_nope");
+            }
+            else
+            {
+                PlayerX = PlayerX-PlayerSpeed;
+            }
             Canvas.SetLeft(player,PlayerX);
         }
-        else if (event2.Key == Key.Right)
+        if (MoveRightFlag == true)
         {
             Console.WriteLine("!right");
             PlayerX = Canvas.GetLeft(player);
-            PlayerY = Canvas.GetTop(player);
-            PlayerX = PlayerX+10;
+            if ((PlayerX + PlayerSpeed + PlayerWidth) >  shirinaOkna)
+            {
+                PlayerX = shirinaOkna-PlayerWidth;
+                Console.WriteLine("!right_nope");
+            }
+            else
+            {
+                PlayerX = PlayerX+PlayerSpeed;          
+            }
             Canvas.SetLeft(player,PlayerX);
         }
-        else if (event2.Key == Key.Up)
+        if (MoveUpFlag == true)
         {
             Console.WriteLine("!up");
-            PlayerX = Canvas.GetLeft(player);
             PlayerY = Canvas.GetTop(player);
-            PlayerY = PlayerY-10;
+            if ((PlayerY - PlayerSpeed) < 0)
+            {
+                PlayerY = 0;
+                Console.WriteLine("!up_nope");
+            }
+            else
+            {
+                PlayerY = PlayerY-PlayerSpeed;
+            }
             Canvas.SetTop(player,PlayerY);
         }
-        else if (event2.Key == Key.Down)
+        if (MoveDownFlag == true)
         {
+            PlayerY = Canvas.GetTop(player);
             Console.WriteLine("!down");
-            PlayerX = Canvas.GetLeft(player);
-            PlayerY = Canvas.GetTop(player);
-            PlayerY = PlayerY+10;
+
+            Console.WriteLine(PlayerHeight+PlayerSpeed+PlayerY);
+            Console.WriteLine(PlayerHeight);
+            Console.WriteLine(PlayerSpeed);
+            Console.WriteLine(PlayerY );
+            Console.WriteLine(vusotaOkna);
+            if ((PlayerY + PlayerSpeed + PlayerHeight) > vusotaOkna)
+            {
+                PlayerY = vusotaOkna-PlayerHeight;
+                Console.WriteLine("!down_nope");
+            }
+            else
+            {
+                PlayerY = PlayerY+PlayerSpeed;
+            }
             Canvas.SetTop(player,PlayerY);
         }
-        else if (event2.Key == Key.Space)
+    }
+    void CreateMeteors(double value)
+    {
+        for (int i = 0;i < value; i++)
         {
-            Console.WriteLine("!Debug = true");
-            Console.WriteLine("Debug features : \nWidth : "+Width+" \nHeight : "+Height);
+            meteors.Add(new Rectangle {Width = 100,Height = 100,Fill = Brushes.Red});
         }
-        event2.Handled = true;
     }
 }

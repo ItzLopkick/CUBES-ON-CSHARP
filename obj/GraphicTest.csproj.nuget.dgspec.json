@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Csharp\\GraphicTest\\GraphicTest.csproj": {}
+    "C:\\Programing\\Csharp\\GraphicTest\\GraphicTest.csproj": {}
   },
   "projects": {
-    "C:\\Csharp\\GraphicTest\\GraphicTest.csproj": {
+    "C:\\Programing\\Csharp\\GraphicTest\\GraphicTest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Csharp\\GraphicTest\\GraphicTest.csproj",
+        "projectUniqueName": "C:\\Programing\\Csharp\\GraphicTest\\GraphicTest.csproj",
         "projectName": "GraphicTest",
-        "projectPath": "C:\\Csharp\\GraphicTest\\GraphicTest.csproj",
-        "packagesPath": "C:\\Users\\Степан\\.nuget\\packages\\",
-        "outputPath": "C:\\Csharp\\GraphicTest\\obj\\",
+        "projectPath": "C:\\Programing\\Csharp\\GraphicTest\\GraphicTest.csproj",
+        "packagesPath": "C:\\Users\\stepa\\.nuget\\packages\\",
+        "outputPath": "C:\\Programing\\Csharp\\GraphicTest\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Степан\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\stepa\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0-windows"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -68,7 +62,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
