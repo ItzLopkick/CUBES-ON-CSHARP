@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Security;
 
 public static class Program
 {
@@ -20,7 +21,8 @@ public static class Program
 
 public class Okoshkatwo:Window
 {
-    double meteorsvalue = 50;
+    double PlayerSpeedFromStart = 5;
+    double meteorsvalue = 5;
     List<Rectangle> meteors = new List<Rectangle>{};
     Rectangle player;
     double PlayerX;
@@ -64,7 +66,7 @@ public class Okoshkatwo:Window
         };
         PlayerWidth = player.Width;
         PlayerHeight = player.Height;
-        PlayerSpeed = 5;
+        PlayerSpeed = PlayerSpeedFromStart;
         gcanvas.Children.Add(player);
         Canvas.SetLeft(player, Width/2);
         Canvas.SetTop(player, Height/2);
@@ -176,7 +178,15 @@ public class Okoshkatwo:Window
         }
         else
         {
-            PlayerSpeed = 5;
+            PlayerSpeed = PlayerSpeedFromStart;
+        }
+        if ((MoveRightFlag == true || MoveLeftFlag == true) && (MoveDownFlag == true || MoveUpFlag == true))
+        {
+            PlayerSpeed = PlayerSpeed*0.7;
+        }
+        else
+        {
+            PlayerSpeed = PlayerSpeedFromStart;
         }
         if (MoveLeftFlag == true)
         {
