@@ -1,0 +1,109 @@
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+public class Player
+{
+    public Rectangle Sprite;
+    public double Speed;
+    public double X;
+    public double Y;
+    public double Width;
+    public double Height;
+    public double SpeedBuff;
+    public bool MoveUpFlag = false;
+    public bool MoveRightFlag = false;
+    public bool MoveDownFlag = false;
+    public bool MoveLeftFlag = false;
+    public bool ShiftFlag = false;
+    public double SpeedFromStart;
+    public Player(Rectangle Sprite,double X,double Y,double SpeedFromStart,double Width, double Height, double SpeedBuff)
+    {
+        this.Sprite = Sprite;
+        this.SpeedFromStart = SpeedFromStart;
+        this.Speed = SpeedFromStart;
+        this.X = X;
+        this.Y = Y;
+        this.Width = Width;
+        this.Height = Height;
+        this.SpeedBuff = SpeedBuff;
+        this.MoveUpFlag = false;
+        this.MoveLeftFlag = false;
+        this.MoveRightFlag = false;
+        this.ShiftFlag = false;
+    }
+    void Controls(double LevelWidth, double LevelHeight)
+    {
+        if (ShiftFlag == true)
+        {
+            Speed = SpeedBuff;
+        }
+        else
+        {
+            Speed = SpeedFromStart;
+        }
+        if ((MoveRightFlag == true || MoveLeftFlag == true) && (MoveDownFlag == true || MoveUpFlag == true))
+        {
+            Speed = Speed*0.7;
+        }
+        else
+        {
+            Speed = SpeedFromStart;
+        }
+        if (MoveLeftFlag == true)
+        {
+            Console.WriteLine("!left");
+            if ((X - Speed) < 0)
+            {
+                X = 0;
+                Console.WriteLine("!left_nope");
+            }
+            else
+            {
+                X = X-Speed;
+            }
+        }
+        if (MoveRightFlag == true)
+        {
+            Console.WriteLine("!right");
+            if ((X + Speed + Width) >  LevelWidth)
+            {
+                X = LevelWidth-Width;
+                Console.WriteLine("!right_nope");
+            }
+            else
+            {
+                X = X+Speed;          
+            }
+        }
+        if (MoveUpFlag == true)
+        {
+            Console.WriteLine("!up");
+            if ((Y - Speed) < 0)
+            {
+                Y = 0;
+                Console.WriteLine("!up_nope");
+            }
+            else
+            {
+                Y = Y-Speed;
+            }
+        }
+        if (MoveDownFlag == true)
+        {
+            Console.WriteLine("!down");
+            Console.WriteLine(LevelHeight);
+            if ((Y + Speed + Height) > LevelHeight)
+            {
+                Y = LevelHeight-Height;
+                Console.WriteLine("!down_nope");
+            }
+            else
+            {
+                Y = Y+Speed;
+            }
+        }
+    }
+}
