@@ -34,7 +34,7 @@ public class Player
         this.MoveRightFlag = false;
         this.ShiftFlag = false;
     }
-    void Controls(double LevelWidth, double LevelHeight)
+    public void Controls(double LevelWidth, double LevelHeight)
     {
         if (ShiftFlag == true)
         {
@@ -54,11 +54,11 @@ public class Player
         }
         if (MoveLeftFlag == true)
         {
-            Console.WriteLine("!left");
+            // Console.WriteLine("!left");
             if ((X - Speed) < 0)
             {
                 X = 0;
-                Console.WriteLine("!left_nope");
+                // Console.WriteLine("!left_nope");
             }
             else
             {
@@ -67,11 +67,11 @@ public class Player
         }
         if (MoveRightFlag == true)
         {
-            Console.WriteLine("!right");
+            // Console.WriteLine("!right");
             if ((X + Speed + Width) >  LevelWidth)
             {
                 X = LevelWidth-Width;
-                Console.WriteLine("!right_nope");
+                // Console.WriteLine("!right_nope");
             }
             else
             {
@@ -80,11 +80,11 @@ public class Player
         }
         if (MoveUpFlag == true)
         {
-            Console.WriteLine("!up");
+            // Console.WriteLine("!up");
             if ((Y - Speed) < 0)
             {
                 Y = 0;
-                Console.WriteLine("!up_nope");
+                // Console.WriteLine("!up_nope");
             }
             else
             {
@@ -93,12 +93,11 @@ public class Player
         }
         if (MoveDownFlag == true)
         {
-            Console.WriteLine("!down");
-            Console.WriteLine(LevelHeight);
+            // Console.WriteLine("!down");
             if ((Y + Speed + Height) > LevelHeight)
             {
                 Y = LevelHeight-Height;
-                Console.WriteLine("!down_nope");
+                // Console.WriteLine("!down_nope");
             }
             else
             {

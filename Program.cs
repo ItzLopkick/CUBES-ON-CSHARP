@@ -21,28 +21,19 @@ public static class Program
 
 public class Okoshkatwo:Window
 {
-    double PlayerSpeedFromStart = 5;
     double meteorsvalue = 5;
     List<Rectangle> meteors = new List<Rectangle>{};
-    Rectangle player;
-    double PlayerX;
-    double PlayerY;
+    Rectangle playersprite; // C
     double shirinaOkna;
     double vusotaOkna;
-    double PlayerWidth;
-    double PlayerSpeed;
-    double PlayerHeight;
-    bool MoveUpFlag = false;
-    bool MoveRightFlag = false;
-    bool MoveDownFlag = false;
-    bool MoveLeftFlag = false;
-    bool ShiftFlag = false;
+    Player player;
+
     Random random = new Random();
     public Okoshkatwo()
     {
         shirinaOkna = this.Width;
         vusotaOkna = this.Height;
-        MessageBox.Show("Version 1.4");
+        MessageBox.Show("Version 1.6");
         Title = "Squre";
         Width = 1000;
         Height = 1000;
@@ -58,18 +49,16 @@ public class Okoshkatwo:Window
         Canvas.SetLeft(img, 500);
         Canvas.SetTop(img, 500);
         CreateMeteors(meteorsvalue);
-        player = new Rectangle
+        playersprite = new Rectangle
         {
             Width = 100,
             Height = 100,
             Fill = Brushes.Green
         };
-        PlayerWidth = player.Width;
-        PlayerHeight = player.Height;
-        PlayerSpeed = PlayerSpeedFromStart;
-        gcanvas.Children.Add(player);
-        Canvas.SetLeft(player, Width/2);
-        Canvas.SetTop(player, Height/2);
+        player = new Player(playersprite,0,0,7,100,100,10);
+        gcanvas.Children.Add(player.Sprite);
+        Canvas.SetLeft(player.Sprite, player.X);
+        Canvas.SetTop(player.Sprite, player.Y);
 
         foreach (Rectangle rect in meteors)
         {
@@ -77,10 +66,6 @@ public class Okoshkatwo:Window
             Canvas.SetLeft(rect,random.Next(0,Convert.ToInt32(Width)));
             Canvas.SetTop(rect,random.Next(-10000,0));
         }
-        // var sqaure = new Rectangle{Width = 100,Height = 100,Fill = Brushes.Red};
-        // gcanvas.Children.Add(sqaure); // добавление фигуры
-        // Canvas.SetLeft(sqaure,100);
-        // Canvas.SetTop(sqaure,100);
 
         Content = gcanvas;
         this.KeyDown += HandlingKeysDown;
@@ -91,10 +76,11 @@ public class Okoshkatwo:Window
         {
             await Task.Delay(3000);
             Canvas.SetLeft(img,-56667);
-            // Iftouching(player,PlayerX,PlayerY,shirinaOkna,vusotaOkna,PlayerWidth);
             while (1 == 1)
             {
-                Controls();
+                player.Controls(shirinaOkna,vusotaOkna);
+                Canvas.SetLeft(player.Sprite,player.X);
+                Canvas.SetTop(player.Sprite,player.Y);
                 foreach (Rectangle rect in meteors)
                 {
                     double squareX = Canvas.GetLeft(rect);
@@ -126,23 +112,23 @@ public class Okoshkatwo:Window
     {
         if (event2.Key == Key.Right)
         {
-            MoveRightFlag = false;
+            player.MoveRightFlag = false;
         }
         if (event2.Key == Key.Up)
         {
-            MoveUpFlag = false;
-        }
-        if (event2.Key == Key.Down)
-        {
-            MoveDownFlag = false;
+            player.MoveUpFlag = false;
         }
         if (event2.Key == Key.Left)
         {
-            MoveLeftFlag = false;
+            player.MoveLeftFlag = false;
+        }
+        if (event2.Key == Key.Down)
+        {
+            player.MoveDownFlag = false;
         }
         if (event2.Key == Key.LeftShift)
         {
-            ShiftFlag = false;
+            player.ShiftFlag = false;
         }
         event2.Handled = true;
     }
@@ -150,111 +136,27 @@ public class Okoshkatwo:Window
     {
         if (event2.Key == Key.Right)
         {
-            MoveRightFlag = true;
+            player.MoveRightFlag = true;
         }
         if (event2.Key == Key.Up)
         {
-            MoveUpFlag = true;
+            player.MoveUpFlag = true;
         }
         if (event2.Key == Key.Down)
         {
-            MoveDownFlag = true;
+            player.MoveDownFlag = true;
         }
         if (event2.Key == Key.Left)
         {
-            MoveLeftFlag = true;
+            player.MoveLeftFlag = true;
         }
         if (event2.Key == Key.LeftShift)
         {
-            ShiftFlag = true;
+            player.ShiftFlag = true;
         }
         event2.Handled = true;
     }
-    void Controls()
-    {
-        if (ShiftFlag == true)
-        {
-            PlayerSpeed = 10;
-        }
-        else
-        {
-            PlayerSpeed = PlayerSpeedFromStart;
-        }
-        if ((MoveRightFlag == true || MoveLeftFlag == true) && (MoveDownFlag == true || MoveUpFlag == true))
-        {
-            PlayerSpeed = PlayerSpeed*0.7;
-        }
-        else
-        {
-            PlayerSpeed = PlayerSpeedFromStart;
-        }
-        if (MoveLeftFlag == true)
-        {
-            Console.WriteLine("!left");
-            PlayerX = Canvas.GetLeft(player);
-            if ((PlayerX - PlayerSpeed) < 0)
-            {
-                PlayerX = 0;
-                Console.WriteLine("!left_nope");
-            }
-            else
-            {
-                PlayerX = PlayerX-PlayerSpeed;
-            }
-            Canvas.SetLeft(player,PlayerX);
-        }
-        if (MoveRightFlag == true)
-        {
-            Console.WriteLine("!right");
-            PlayerX = Canvas.GetLeft(player);
-            if ((PlayerX + PlayerSpeed + PlayerWidth) >  shirinaOkna)
-            {
-                PlayerX = shirinaOkna-PlayerWidth;
-                Console.WriteLine("!right_nope");
-            }
-            else
-            {
-                PlayerX = PlayerX+PlayerSpeed;          
-            }
-            Canvas.SetLeft(player,PlayerX);
-        }
-        if (MoveUpFlag == true)
-        {
-            Console.WriteLine("!up");
-            PlayerY = Canvas.GetTop(player);
-            if ((PlayerY - PlayerSpeed) < 0)
-            {
-                PlayerY = 0;
-                Console.WriteLine("!up_nope");
-            }
-            else
-            {
-                PlayerY = PlayerY-PlayerSpeed;
-            }
-            Canvas.SetTop(player,PlayerY);
-        }
-        if (MoveDownFlag == true)
-        {
-            PlayerY = Canvas.GetTop(player);
-            Console.WriteLine("!down");
-
-            Console.WriteLine(PlayerHeight+PlayerSpeed+PlayerY);
-            Console.WriteLine(PlayerHeight);
-            Console.WriteLine(PlayerSpeed);
-            Console.WriteLine(PlayerY );
-            Console.WriteLine(vusotaOkna);
-            if ((PlayerY + PlayerSpeed + PlayerHeight) > vusotaOkna)
-            {
-                PlayerY = vusotaOkna-PlayerHeight;
-                Console.WriteLine("!down_nope");
-            }
-            else
-            {
-                PlayerY = PlayerY+PlayerSpeed;
-            }
-            Canvas.SetTop(player,PlayerY);
-        }
-    }
+    
     void CreateMeteors(double value)
     {
         for (int i = 0;i < value; i++)
