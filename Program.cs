@@ -21,9 +21,9 @@ public static class Program
 
 public class Okoshkatwo:Window
 {
-    double meteorsvalue = 5;
-    List<Rectangle> meteors = new List<Rectangle>{};
-    Rectangle playersprite; // C
+    double meteorsvalue = 50;
+    List<Meteor> meteors = new List<Meteor>{};
+    Rectangle playersprite;
     double shirinaOkna;
     double vusotaOkna;
     Player player;
@@ -31,14 +31,13 @@ public class Okoshkatwo:Window
     Random random = new Random();
     public Okoshkatwo()
     {
-        shirinaOkna = this.Width;
-        vusotaOkna = this.Height;
-        MessageBox.Show("Version 1.6");
+        var gcanvas = new Canvas{};
+        Content = gcanvas;
+        MessageBox.Show("Version 1.7");
         Title = "Squre";
         Width = 1000;
         Height = 1000;
         Icon = new BitmapImage(new Uri("pack://application:,,,/assets/app.ico"));
-        var gcanvas = new Canvas{};
         var img = new Image
         {
             Width = 200,
@@ -48,7 +47,6 @@ public class Okoshkatwo:Window
         gcanvas.Children.Add(img);
         Canvas.SetLeft(img, 500);
         Canvas.SetTop(img, 500);
-        CreateMeteors(meteorsvalue);
         playersprite = new Rectangle
         {
             Width = 100,
@@ -59,51 +57,54 @@ public class Okoshkatwo:Window
         gcanvas.Children.Add(player.Sprite);
         Canvas.SetLeft(player.Sprite, player.X);
         Canvas.SetTop(player.Sprite, player.Y);
-
-        foreach (Rectangle rect in meteors)
-        {
-            gcanvas.Children.Add(rect);
-            Canvas.SetLeft(rect,random.Next(0,Convert.ToInt32(Width)));
-            Canvas.SetTop(rect,random.Next(-10000,0));
-        }
-
-        Content = gcanvas;
+        
         this.KeyDown += HandlingKeysDown;
         this.KeyUp += HandlingKeysUp;
         this.Focusable = true;
         this.Focus();
         Loaded += async (_,__) =>
         {
+            shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
+            vusotaOkna = this.ActualHeight-38; // круто
             await Task.Delay(3000);
             Canvas.SetLeft(img,-56667);
+            CreateMeteors(meteorsvalue);
+            foreach (Meteor meteor in meteors)
+            {
+                gcanvas.Children.Add(meteor.Sprite);
+                Canvas.SetLeft(meteor.Sprite,meteor.X);
+                Canvas.SetTop(meteor.Sprite,meteor.Y);
+            }
             while (1 == 1)
             {
+                shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
+                vusotaOkna = this.ActualHeight-38; // круто
+
                 player.Controls(shirinaOkna,vusotaOkna);
                 Canvas.SetLeft(player.Sprite,player.X);
                 Canvas.SetTop(player.Sprite,player.Y);
-                foreach (Rectangle rect in meteors)
-                {
-                    double squareX = Canvas.GetLeft(rect);
-                    double squareY = Canvas.GetTop(rect);
-                    squareY = squareY+10;
-                    Canvas.SetTop(rect,squareY);
-                    shirinaOkna = this.ActualWidth-15;
-                    vusotaOkna = this.ActualHeight-38;
-                    if (squareY > vusotaOkna)
-                    {
-                        int vusotaOknaInt = Convert.ToInt32(vusotaOkna);
-                        int shirinaOknaInt = Convert.ToInt32(shirinaOkna);
 
-                        int xRandom = random.Next(0,shirinaOknaInt);
-                        int yRandom = random.Next(-6000,-500);
-                        Canvas.SetLeft(rect,xRandom);
-                        Canvas.SetTop(rect,yRandom);
+
+                foreach (Meteor meteor in meteors)
+                {
+                    meteor.Undertale();
+                    Canvas.SetTop(meteor.Sprite,meteor.Y);
+                    if (meteor.Y > vusotaOkna)
+                    {
+
+                        meteor.X = random.Next(0,Convert.ToInt32(shirinaOkna));
+                        meteor.Y = random.Next(-6000,-500);
+
+                        Canvas.SetLeft(meteor.Sprite,meteor.X);
+                        Canvas.SetTop(meteor.Sprite,meteor.Y);
                     }
                 }
+                
 
                 // tick
                 await Task.Delay(10);
             }
+            
             
         };
         
@@ -161,7 +162,9 @@ public class Okoshkatwo:Window
     {
         for (int i = 0;i < value; i++)
         {
-            meteors.Add(new Rectangle {Width = 100,Height = 100,Fill = Brushes.Red});
+            Rectangle meteorsprite = new Rectangle{Width = random.Next(70,100),Height = random.Next(70,100),Fill = Brushes.Red};
+            Meteor meteor1 = new Meteor(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),random.Next(-1000,1000),meteorsprite.Width,meteorsprite.Height,random.Next(15,25));
+            meteors.Add(meteor1);
         }
     }
 }
