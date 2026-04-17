@@ -21,7 +21,7 @@ public static class Program
 
 public class Okoshkatwo:Window
 {
-    double meteorsvalue = 50;
+    double meteorsvalue = 20;
     List<Meteor> meteors = new List<Meteor>{};
     Rectangle playersprite;
     double shirinaOkna;
@@ -29,8 +29,9 @@ public class Okoshkatwo:Window
     Player player;
 
     Random random = new Random();
-    public Okoshkatwo()
+    public Okoshkatwo() // ничо не исправлять
     {
+        // Озон . Настройка окна
         var gcanvas = new Canvas{};
         Content = gcanvas;
         MessageBox.Show("Version 1.7");
@@ -38,36 +39,29 @@ public class Okoshkatwo:Window
         Width = 1000;
         Height = 1000;
         Icon = new BitmapImage(new Uri("pack://application:,,,/assets/app.ico"));
-        var img = new Image
-        {
-            Width = 200,
-            Height = 200,
-            Source = new BitmapImage(new Uri("pack://application:,,,/assets/app.ico"))
-        };
-        gcanvas.Children.Add(img);
-        Canvas.SetLeft(img, 500);
-        Canvas.SetTop(img, 500);
-        playersprite = new Rectangle
-        {
-            Width = 100,
-            Height = 100,
-            Fill = Brushes.Green
-        };
-        player = new Player(playersprite,0,0,7,100,100,10);
-        gcanvas.Children.Add(player.Sprite);
-        Canvas.SetLeft(player.Sprite, player.X);
-        Canvas.SetTop(player.Sprite, player.Y);
-        
+
+        // Короче это привазка функции к клавиатуре и создаём Loaded
         this.KeyDown += HandlingKeysDown;
         this.KeyUp += HandlingKeysUp;
         this.Focusable = true;
         this.Focus();
-        Loaded += async (_,__) =>
+        Loaded += async (_,__) => // :0
+        // MAIN CODE HERE
         {
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
-            await Task.Delay(3000);
-            Canvas.SetLeft(img,-56667);
+
+            playersprite = new Rectangle
+            {
+                Width = 100,
+                Height = 100,
+                Fill = Brushes.Green
+            };
+            player = new Player(playersprite,0,0,7,100,100,10);
+            gcanvas.Children.Add(player.Sprite);
+            Canvas.SetLeft(player.Sprite, player.X);
+            Canvas.SetTop(player.Sprite, player.Y);
+
             CreateMeteors(meteorsvalue);
             foreach (Meteor meteor in meteors)
             {
