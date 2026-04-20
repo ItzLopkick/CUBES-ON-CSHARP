@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 public class Player
 {
-    public Image Sprite;
+    public Rectangle Sprite;
     public double Speed;
     public double X;
     public double Y;
@@ -20,7 +20,7 @@ public class Player
     public bool MoveLeftFlag = false;
     public bool ShiftFlag = false;
     public double SpeedFromStart;
-    public Player(Image Sprite,double hp,double X,double Y,double SpeedFromStart,double Width, double Height, double SpeedBuff)
+    public Player(Rectangle Sprite,double hp,double X,double Y,double SpeedFromStart,double Width, double Height, double SpeedBuff)
     {
         this.Sprite = Sprite;
         this.hp = hp;

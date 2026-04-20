@@ -22,9 +22,10 @@ public static class Program
 
 public class Okoshkatwo:Window
 {
+    bool AttackOver = false;
     double meteorsvalue = 20;
     List<Meteor> meteors = new List<Meteor>{};
-    Image playersprite;
+    Rectangle playersprite;
     double shirinaOkna;
     double vusotaOkna;
     Player player;
@@ -54,11 +55,11 @@ public class Okoshkatwo:Window
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
 
-            playersprite = new Image
+            playersprite = new Rectangle
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(new Uri("pack://application:,,,/assets/app.ico"))
+                Fill = Brushes.Red
             };
             player = new Player(playersprite,100,0,7,10,100,100,15);
 
@@ -121,49 +122,63 @@ public class Okoshkatwo:Window
     }
     void HandlingKeysUp(object Sender,KeyEventArgs event2)
     {
-        if (event2.Key == Key.Right)
+        if (AttackOver == false)
         {
-            player.MoveRightFlag = false;
+            if (event2.Key == Key.Right)
+            {
+                player.MoveRightFlag = false;
+            }
+            if (event2.Key == Key.Up)
+            {
+                player.MoveUpFlag = false;
+            }
+            if (event2.Key == Key.Left)
+            {
+                player.MoveLeftFlag = false;
+            }
+            if (event2.Key == Key.Down)
+            {
+                player.MoveDownFlag = false;
+            }
+            if (event2.Key == Key.LeftShift)
+            {
+                player.ShiftFlag = false;
+            }
+            else
+            {
+                
+            }
+            event2.Handled = true;
         }
-        if (event2.Key == Key.Up)
-        {
-            player.MoveUpFlag = false;
-        }
-        if (event2.Key == Key.Left)
-        {
-            player.MoveLeftFlag = false;
-        }
-        if (event2.Key == Key.Down)
-        {
-            player.MoveDownFlag = false;
-        }
-        if (event2.Key == Key.LeftShift)
-        {
-            player.ShiftFlag = false;
-        }
-        event2.Handled = true;
     }
     void HandlingKeysDown(object Sender,KeyEventArgs event2)
     {
-        if (event2.Key == Key.Right)
+        if (AttackOver == false)
         {
-            player.MoveRightFlag = true;
+            if (event2.Key == Key.Right)
+            {
+                player.MoveRightFlag = true;
+            }
+            if (event2.Key == Key.Up)
+            {
+                player.MoveUpFlag = true;
+            }
+            if (event2.Key == Key.Down)
+            {
+                player.MoveDownFlag = true;
+            }
+            if (event2.Key == Key.Left)
+            {
+                player.MoveLeftFlag = true;
+            }
+            if (event2.Key == Key.LeftShift)
+            {
+                player.ShiftFlag = true;
+            }
         }
-        if (event2.Key == Key.Up)
+        else
         {
-            player.MoveUpFlag = true;
-        }
-        if (event2.Key == Key.Down)
-        {
-            player.MoveDownFlag = true;
-        }
-        if (event2.Key == Key.Left)
-        {
-            player.MoveLeftFlag = true;
-        }
-        if (event2.Key == Key.LeftShift)
-        {
-            player.ShiftFlag = true;
+            
         }
         event2.Handled = true;
     }
