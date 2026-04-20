@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Security;
+using System;
 
 public static class Program
 {
@@ -23,10 +24,12 @@ public class Okoshkatwo:Window
 {
     double meteorsvalue = 20;
     List<Meteor> meteors = new List<Meteor>{};
-    Rectangle playersprite;
+    Image playersprite;
     double shirinaOkna;
     double vusotaOkna;
     Player player;
+    Rectangle AttckBtnSprite;
+    BtlButton AttackBtn;
 
     Random random = new Random();
     public Okoshkatwo() // ничо не исправлять
@@ -51,16 +54,29 @@ public class Okoshkatwo:Window
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
 
-            playersprite = new Rectangle
+            playersprite = new Image
             {
                 Width = 100,
                 Height = 100,
-                Fill = Brushes.Green
+                Source = new BitmapImage(new Uri("pack://application:,,,/assets/app.ico"))
             };
-            player = new Player(playersprite,0,0,7,100,100,10);
+            player = new Player(playersprite,100,0,7,10,100,100,15);
+
+            AttckBtnSprite = new Rectangle
+            {
+                Width = 50,
+                Height = 50,
+                Fill = Brushes.Blue
+            };
+            AttackBtn = new BtlButton(AttckBtnSprite,vusotaOkna/2,shirinaOkna/2,50,50,false);
+
             gcanvas.Children.Add(player.Sprite);
             Canvas.SetLeft(player.Sprite, player.X);
             Canvas.SetTop(player.Sprite, player.Y);
+
+            gcanvas.Children.Add(AttackBtn.Sprite);
+            Canvas.SetLeft(AttackBtn.Sprite, AttackBtn.X);
+            Canvas.SetTop(AttackBtn.Sprite,AttackBtn.Y);
 
             CreateMeteors(meteorsvalue);
             foreach (Meteor meteor in meteors)
@@ -93,7 +109,7 @@ public class Okoshkatwo:Window
                         Canvas.SetTop(meteor.Sprite,meteor.Y);
                     }
                 }
-                
+                AttackBtnFunction();
 
                 // tick
                 await Task.Delay(10);
@@ -159,6 +175,18 @@ public class Okoshkatwo:Window
             Rectangle meteorsprite = new Rectangle{Width = random.Next(70,100),Height = random.Next(70,100),Fill = Brushes.Red};
             Meteor meteor1 = new Meteor(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),random.Next(-1000,1000),meteorsprite.Width,meteorsprite.Height,random.Next(15,25));
             meteors.Add(meteor1);
+        }
+    }
+    void AttackBtnFunction()
+    {
+        if (AttackBtn.IsActive == true)
+        {
+            // enemyhp - 10
+            AttackBtn.IsActive = false;
+        }
+        else
+        {
+            
         }
     }
 }
