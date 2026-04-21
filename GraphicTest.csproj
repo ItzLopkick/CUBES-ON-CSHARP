@@ -11,5 +11,13 @@
   <ItemGroup>
     <Resource Include="assets\app.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.3.0" />
+  </ItemGroup>
+    <ItemGroup>
+    <Content Include="assets\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

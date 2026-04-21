@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Security;
 using System;
+using System.Media;
+using NAudio;
+using NAudio.Wave;
 
 public static class Program
 {
@@ -22,6 +25,7 @@ public static class Program
 
 public class Okoshkatwo:Window
 {
+    private static readonly WaveOutEvent waveOut = new();
     bool AttackOver = false;
     double meteorsvalue = 20;
     List<Meteor> meteors = new List<Meteor>{};
@@ -31,7 +35,9 @@ public class Okoshkatwo:Window
     Player player;
     Rectangle AttckBtnSprite;
     BtlButton AttackBtn;
-
+    // Sounds
+    Sound RMusic = new Sound();
+    Sound RSound = new Sound();
     Random random = new Random();
     public Okoshkatwo() // ничо не исправлять
     {
@@ -39,11 +45,10 @@ public class Okoshkatwo:Window
         var gcanvas = new Canvas{};
         Content = gcanvas;
         MessageBox.Show("Version 1.7");
-        Title = "Squre";
+        Title = "The rain test";
         Width = 1000;
         Height = 1000;
         Icon = new BitmapImage(new Uri("pack://application:,,,/assets/app.ico"));
-
         // Короче это привазка функции к клавиатуре и создаём Loaded
         this.KeyDown += HandlingKeysDown;
         this.KeyUp += HandlingKeysUp;
@@ -52,6 +57,8 @@ public class Okoshkatwo:Window
         Loaded += async (_,__) => // :0
         // MAIN CODE HERE
         {
+            RMusic.PlayLoop("assets/sounds/Run.mp3");
+            RSound.PlaySound("assets/sounds/metal.mp3");
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
 
