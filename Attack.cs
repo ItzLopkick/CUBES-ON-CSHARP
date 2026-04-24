@@ -4,7 +4,7 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-public class Meteor
+public class Attack
 {
     public Rectangle Sprite;
     public double X;
@@ -12,7 +12,7 @@ public class Meteor
     public double Speed;
     public double Width;
     public double Height;
-    public Meteor(Rectangle Sprite,double X, double Y,double Width,double Height,double Speed)
+    public Attack(Rectangle Sprite,double X, double Y,double Width,double Height,double Speed)
     {
         this.Sprite = Sprite;
         this.X = X;

@@ -19,27 +19,45 @@ public static class Program
     public static void Main()
     {
         var aboba = new Application();
-        aboba.Run(new Okoshkatwo());
+        aboba.Run(new Game());
     }
 }
 
-public class Okoshkatwo:Window
+public class Game:Window
 {
     private static readonly WaveOutEvent waveOut = new();
     bool AttackOver = false;
+    double AttackTime = 0;
     double meteorsvalue = 20;
-    List<Meteor> meteors = new List<Meteor>{};
-    Rectangle playersprite;
+    double buttonselected = 1;
+    List<Attack> meteors = new List<Attack>{};
+    Image playersprite;
     double shirinaOkna;
     double vusotaOkna;
     Player player;
-    Rectangle AttckBtnSprite;
+    Image AttckBtnSprite;
     BtlButton AttackBtn;
+    Image ActBtnSprite;
+    BtlButton ActBtn;
+    Image SpareBtnSprite;
+    BtlButton SpareBtn;
+    Image BlockBtnSprite;
+    BtlButton BlockBtn;
+    List<bool> buttons = new List<bool>{};
+    Image PlayerBTL;
+    Image EnemySprite;
+    Enemy Enemy1;
+    Image Arena;
+    Image StephBar;
+    TextBox PlayerHp;
+    AttackSettings attackSettings;
     // Sounds
     Sound RMusic = new Sound();
     Sound RSound = new Sound();
+
+    // RANDOM
     Random random = new Random();
-    public Okoshkatwo() // ничо не исправлять
+    public Game() // ничо не исправлять
     {
         // Озон . Настройка окна
         var gcanvas = new Canvas{};
@@ -48,7 +66,8 @@ public class Okoshkatwo:Window
         Title = "The rain test";
         Width = 1000;
         Height = 1000;
-        Icon = new BitmapImage(new Uri("pack://application:,,,/assets/app.ico"));
+        Icon = new BitmapImage(new Uri("assets/app.ico",UriKind.Relative));
+        Background = Brushes.Black;
         // Короче это привазка функции к клавиатуре и создаём Loaded
         this.KeyDown += HandlingKeysDown;
         this.KeyUp += HandlingKeysUp;
@@ -62,63 +81,171 @@ public class Okoshkatwo:Window
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
 
-            playersprite = new Rectangle
+            playersprite = new Image
             {
                 Width = 100,
                 Height = 100,
-                Fill = Brushes.Red
+                Source = new BitmapImage(new Uri("assets/player.png",UriKind.Relative))
             };
-            player = new Player(playersprite,100,0,7,10,100,100,15);
-
-            AttckBtnSprite = new Rectangle
+            player = new Player(playersprite,100,0,7,10,100,100,15,4);
+            PlayerBTL = new Image
             {
-                Width = 50,
-                Height = 50,
-                Fill = Brushes.Blue
+                Width = 200,
+                Height = 227,
+                Source = new BitmapImage(new Uri("assets/playerbtlidle.png",UriKind.Relative))
             };
-            AttackBtn = new BtlButton(AttckBtnSprite,vusotaOkna/2,shirinaOkna/2,50,50,false);
+
+            Enemy1 = new Enemy(EnemySprite,0,250);
+            // GUI buttons / bar
+            AttckBtnSprite = new Image
+            {
+                Width = 100,
+                Height = 100,
+                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+            };
+            ActBtnSprite = new Image
+            {
+                Width = 100,
+                Height = 100,
+                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+            };
+            SpareBtnSprite = new Image
+            {
+                Width = 100,
+                Height = 100,
+                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+            };
+            BlockBtnSprite = new Image
+            {
+                Width = 100,
+                Height = 100,
+                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+            };
+            AttackBtn = new BtlButton(AttckBtnSprite,shirinaOkna/2+300,vusotaOkna-100,100,100,false,true);
+            ActBtn = new BtlButton(ActBtnSprite,shirinaOkna/2+400,vusotaOkna-100,100,100,false,false);
+            SpareBtn = new BtlButton(SpareBtnSprite,shirinaOkna/2+500,vusotaOkna-100,100,100,false,false);
+            BlockBtn = new BtlButton(BlockBtnSprite,shirinaOkna/2+600,vusotaOkna-100,100,100,false,false);
+
+            StephBar = new Image
+            {
+                Width = 250,
+                Height = 50,
+                Source = new BitmapImage(new Uri("assets/Stephsbar.png",UriKind.Relative))
+            };
+            gcanvas.Children.Add(StephBar);
+            Canvas.SetLeft(StephBar,shirinaOkna/2+350);
+            Canvas.SetTop(StephBar,vusotaOkna-150);
+            PlayerHp = new TextBox
+            {
+                Width = 100,
+                Height = 20,
+                Text = ""+player.hp
+            };
+            gcanvas.Children.Add(PlayerHp);
+            Canvas.SetLeft(PlayerHp,shirinaOkna/2+400);
+            Canvas.SetTop(PlayerHp,vusotaOkna-150);
+            //attack setting
+            AttackSettings attackSettings = new AttackSettings(2000,meteors);
+
+            //Arena / backround
+            Arena = new Image
+            {
+                Width = 500,
+                Height = 500,
+                Source = new BitmapImage(new Uri("assets/btlarena.png",UriKind.Relative))
+            };
+            gcanvas.Children.Add(Arena);
+            Canvas.SetLeft(Arena,shirinaOkna/2-500);
+            Canvas.SetTop(Arena,vusotaOkna/2);
 
             gcanvas.Children.Add(player.Sprite);
+            gcanvas.Children.Add(PlayerBTL);
             Canvas.SetLeft(player.Sprite, player.X);
             Canvas.SetTop(player.Sprite, player.Y);
+            Canvas.SetLeft(PlayerBTL, 50);
+            Canvas.SetTop(PlayerBTL,vusotaOkna/2);
 
             gcanvas.Children.Add(AttackBtn.Sprite);
             Canvas.SetLeft(AttackBtn.Sprite, AttackBtn.X);
             Canvas.SetTop(AttackBtn.Sprite,AttackBtn.Y);
+            gcanvas.Children.Add(ActBtn.Sprite);
+            Canvas.SetLeft(ActBtn.Sprite, ActBtn.X);
+            Canvas.SetTop(ActBtn.Sprite,ActBtn.Y);
+            gcanvas.Children.Add(SpareBtn.Sprite);
+            Canvas.SetLeft(SpareBtn.Sprite,SpareBtn.X);
+            Canvas.SetTop(SpareBtn.Sprite,SpareBtn.Y);
+            gcanvas.Children.Add(BlockBtn.Sprite);
+            Canvas.SetLeft(BlockBtn.Sprite, BlockBtn.X);
+            Canvas.SetTop(BlockBtn.Sprite,BlockBtn.Y);
 
             CreateMeteors(meteorsvalue);
-            foreach (Meteor meteor in meteors)
+            foreach (Attack meteor in meteors)
             {
                 gcanvas.Children.Add(meteor.Sprite);
                 Canvas.SetLeft(meteor.Sprite,meteor.X);
                 Canvas.SetTop(meteor.Sprite,meteor.Y);
             }
+            buttons.Add(AttackBtn.IsActive);
+            buttons.Add(ActBtn.IsActive);
+            buttons.Add(SpareBtn.IsActive);
+            buttons.Add(BlockBtn.IsActive);
             while (1 == 1)
             {
                 shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
                 vusotaOkna = this.ActualHeight-38; // круто
-
                 player.Controls(shirinaOkna,vusotaOkna);
                 Canvas.SetLeft(player.Sprite,player.X);
                 Canvas.SetTop(player.Sprite,player.Y);
+                Canvas.SetLeft(PlayerBTL, 50);
+                Canvas.SetTop(PlayerBTL,vusotaOkna/2);
+
+                Canvas.SetLeft(Arena,shirinaOkna/2-220);
+                Canvas.SetTop(Arena,vusotaOkna/2-250);
+                PlayerHp.Text = ""+player.hp;
 
 
-                foreach (Meteor meteor in meteors)
+                if (AttackOver == false)
                 {
-                    meteor.Undertale();
-                    Canvas.SetTop(meteor.Sprite,meteor.Y);
-                    if (meteor.Y > vusotaOkna)
+                    foreach (Attack meteor in meteors)
                     {
-
-                        meteor.X = random.Next(0,Convert.ToInt32(shirinaOkna));
-                        meteor.Y = random.Next(-6000,-500);
-
-                        Canvas.SetLeft(meteor.Sprite,meteor.X);
+                        meteor.Undertale();
                         Canvas.SetTop(meteor.Sprite,meteor.Y);
+                        if (meteor.Y > vusotaOkna)
+                        {
+
+                            meteor.X = random.Next(0,Convert.ToInt32(shirinaOkna));
+                            meteor.Y = random.Next(-6000,-500);
+
+                            Canvas.SetLeft(meteor.Sprite,meteor.X);
+                            Canvas.SetTop(meteor.Sprite,meteor.Y);
+                        }
                     }
                 }
-                AttackBtnFunction();
-
+                else
+                {
+                    
+                }
+                
+                PlayerBTL.Source = new BitmapImage(
+                new Uri("assets/playerbtlidle.png", UriKind.Relative));
+                if (AttackOver == false)
+                {
+                    AttackTime = AttackTime +1;
+                    if (AttackTime > attackSettings.attacklength || AttackTime == attackSettings.attacklength)
+                    {
+                        AttackOver = true;
+                    }
+                    else
+                    {
+                        AttackOver = true;
+                        AttackTime = 0;
+                        
+                    }
+                }
+                else
+                {
+                    AttackTime = 0;
+                }
                 // tick
                 await Task.Delay(10);
             }
@@ -126,6 +253,42 @@ public class Okoshkatwo:Window
             
         };
         
+    }
+    void HandlingButtons()
+    {
+        // число увиличивается и проверяет если нажата вправо-left (если число следуеше 2 3 4 1)
+        if (buttonselected == 0)
+        {
+            AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+        }
+        if (buttonselected != 0)
+        {
+            AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+        }
+        if (buttonselected == 1)
+        {
+            ActBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+        }
+        if (buttonselected != 1)
+        {
+            ActBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+        }
+        if (buttonselected == 2)
+        {
+            SpareBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+        }
+        if (buttonselected != 2)
+        {
+            SpareBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+        }
+        if (buttonselected == 3)
+        {
+            BlockBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+        }
+        if (buttonselected != 3)
+        {
+            BlockBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+        }
     }
     void HandlingKeysUp(object Sender,KeyEventArgs event2)
     {
@@ -151,9 +314,36 @@ public class Okoshkatwo:Window
             {
                 player.ShiftFlag = false;
             }
+            if (event2.Key == Key.C)
+            {
+                AttackOver = false;
+            }
             else
             {
-                
+                if (event2.Key == Key.Right)
+                {
+                    
+                }
+                if (event2.Key == Key.Up)
+                {
+                    
+                }
+                if (event2.Key == Key.Left)
+                {
+                    
+                }
+                if (event2.Key == Key.Down)
+                {
+                    
+                }
+                if (event2.Key == Key.LeftShift)
+                {
+                    
+                }
+                if (event2.Key == Key.C)
+                {
+                    AttackOver = false;
+                }
             }
             event2.Handled = true;
         }
@@ -182,10 +372,77 @@ public class Okoshkatwo:Window
             {
                 player.ShiftFlag = true;
             }
+            if (event2.Key == Key.C)
+            {
+                AttackOver = true;
+            }
         }
         else
         {
-            
+            if (event2.Key == Key.Right)
+                {
+                    if (buttonselected > 3)
+                    {
+                        buttonselected = 0;
+                        HandlingButtons();
+                    }
+                    else
+                    {
+                        buttonselected = buttonselected+1;
+                        HandlingButtons();
+                    }
+                }
+                if (event2.Key == Key.Up)
+                {
+                    
+                }
+                if (event2.Key == Key.Left)
+                {
+                    if (buttonselected < 0)
+                    {
+                        buttonselected = 3;
+                        HandlingButtons();
+                    }
+                    else
+                    {
+                        buttonselected = buttonselected-1;
+                        HandlingButtons();
+                    }
+                }
+                if (event2.Key == Key.Down)
+                {
+                    
+                }
+                if (event2.Key == Key.LeftShift)
+                {
+                    
+                }
+                if (event2.Key == Key.C)
+                {
+                    AttackOver = true;
+                }
+                if (event2.Key == Key.Enter)
+                {
+                    if (buttonselected == 0)
+                    {
+                        Enemy1.hp = Enemy1.hp - 20;
+                        PlayerBTL.Source = new BitmapImage(
+                        new Uri("assets/playerbtlhitattack.png", UriKind.Relative));
+                        AttackOver = false;
+                    }
+                    if (buttonselected == 1)
+                    {
+                        AttackOver = false;
+                    }
+                    if (buttonselected == 2)
+                    {
+                        AttackOver = false;
+                    }
+                    if (buttonselected == 3)
+                    {
+                        AttackOver = false;
+                    }
+                }
         }
         event2.Handled = true;
     }
@@ -194,21 +451,22 @@ public class Okoshkatwo:Window
     {
         for (int i = 0;i < value; i++)
         {
-            Rectangle meteorsprite = new Rectangle{Width = random.Next(70,100),Height = random.Next(70,100),Fill = Brushes.Red};
-            Meteor meteor1 = new Meteor(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),random.Next(-1000,1000),meteorsprite.Width,meteorsprite.Height,random.Next(15,25));
-            meteors.Add(meteor1);
-        }
-    }
-    void AttackBtnFunction()
-    {
-        if (AttackBtn.IsActive == true)
-        {
-            // enemyhp - 10
-            AttackBtn.IsActive = false;
-        }
-        else
-        {
-            
+            if (AttackOver == true)
+            {
+                while (AttackOver == true)
+                {
+                    foreach (Attack meteor in meteors)
+                    {
+                        Canvas.SetTop(meteor.Sprite,-1930921938129839);
+                    }
+                }
+            }
+            else
+            {
+                Rectangle meteorsprite = new Rectangle{Width = random.Next(70,100),Height = random.Next(70,100),Fill = Brushes.Red};
+                Attack meteor = new Attack(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),random.Next(-1000,1000),meteorsprite.Width,meteorsprite.Height,random.Next(15,25));
+                meteors.Add(meteor);
+            }
         }
     }
 }

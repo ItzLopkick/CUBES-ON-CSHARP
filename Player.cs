@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 public class Player
 {
-    public Rectangle Sprite;
+    public Image Sprite;
     public double Speed;
     public double X;
     public double Y;
@@ -20,7 +20,8 @@ public class Player
     public bool MoveLeftFlag = false;
     public bool ShiftFlag = false;
     public double SpeedFromStart;
-    public Player(Rectangle Sprite,double hp,double X,double Y,double SpeedFromStart,double Width, double Height, double SpeedBuff)
+    public double ButtonCount;
+    public Player(Image Sprite,double hp,double X,double Y,double SpeedFromStart,double Width, double Height, double SpeedBuff, double ButtonCount)
     {
         this.Sprite = Sprite;
         this.hp = hp;
@@ -35,6 +36,7 @@ public class Player
         this.MoveLeftFlag = false;
         this.MoveRightFlag = false;
         this.ShiftFlag = false;
+        this.ButtonCount = ButtonCount;
     }
     public void Controls(double LevelWidth, double LevelHeight)
     {

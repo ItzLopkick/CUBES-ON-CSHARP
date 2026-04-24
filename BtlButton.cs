@@ -11,14 +11,14 @@ using System.Security;
 
 public class BtlButton
 {
-    public Rectangle Sprite;
+    public Image Sprite;
     public double X;
     public double Y;
     public double Width;
     public double Height;
     public bool IsActive;
-    // public bool IsClicked;
-    public BtlButton(Rectangle Sprite,double X, double Y,double Width,double Height,bool IsActive)
+    public bool IsClicked;
+    public BtlButton(Image Sprite,double X, double Y,double Width,double Height,bool IsActive,bool IsClicked)
     {
         this.Sprite = Sprite;
         this.X = X;
@@ -26,6 +26,7 @@ public class BtlButton
         this.Width = Width;
         this.Height = Height;
         this.IsActive = IsActive;
+        this.IsClicked = IsClicked;
     }
 
 }

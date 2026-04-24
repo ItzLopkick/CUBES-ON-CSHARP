@@ -8,14 +8,16 @@
     <Nullable>enable</Nullable>
     <ApplicationIcon>assets\app.ico</ApplicationIcon>
   </PropertyGroup>
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Resource Include="assets\app.ico" />
-  </ItemGroup>
+    <Resource Include="assets\player.png" />
+    <Resource Include="assets\Just_idk.png" />
+  </ItemGroup> -->
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.3.0" />
   </ItemGroup>
     <ItemGroup>
-    <Content Include="assets\**\*">
+    <Content Include="assets\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
