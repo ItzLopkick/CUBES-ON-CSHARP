@@ -38,8 +38,10 @@ public class Player
         this.ShiftFlag = false;
         this.ButtonCount = ButtonCount;
     }
-    public void Controls(double LevelWidth, double LevelHeight)
+    public void Controls(double ArenaX, double ArenaY, double ArenaWidth, double ArenaHeight)
     {
+        double ArenaX2 = ArenaX+ArenaWidth;
+        double ArenaY2 = ArenaY+ArenaHeight;
         if (ShiftFlag == true)
         {
             Speed = SpeedBuff;
@@ -59,9 +61,9 @@ public class Player
         if (MoveLeftFlag == true)
         {
             // Console.WriteLine("!left");
-            if ((X - Speed) < 0)
+            if ((X - Speed) < ArenaX)
             {
-                X = 0;
+                X = ArenaX;
                 // Console.WriteLine("!left_nope");
             }
             else
@@ -72,9 +74,9 @@ public class Player
         if (MoveRightFlag == true)
         {
             // Console.WriteLine("!right");
-            if ((X + Speed + Width) >  LevelWidth)
+            if ((X + Speed + Width) >  ArenaX2)
             {
-                X = LevelWidth-Width;
+                X = ArenaX2-Width;
                 // Console.WriteLine("!right_nope");
             }
             else
@@ -85,9 +87,9 @@ public class Player
         if (MoveUpFlag == true)
         {
             // Console.WriteLine("!up");
-            if ((Y - Speed) < 0)
+            if ((Y - Speed) < ArenaY)
             {
-                Y = 0;
+                Y = ArenaY;
                 // Console.WriteLine("!up_nope");
             }
             else
@@ -98,9 +100,9 @@ public class Player
         if (MoveDownFlag == true)
         {
             // Console.WriteLine("!down");
-            if ((Y + Speed + Height) > LevelHeight)
+            if ((Y + Speed + Height) > ArenaY2)
             {
-                Y = LevelHeight-Height;
+                Y = ArenaY2-Height;
                 // Console.WriteLine("!down_nope");
             }
             else
@@ -109,4 +111,72 @@ public class Player
             }
         }
     }
+    // if (ShiftFlag == true)
+        // {
+        //     Speed = SpeedBuff;
+        // }
+        // else
+        // {
+        //     Speed = SpeedFromStart;
+        // }
+        // if ((MoveRightFlag == true || MoveLeftFlag == true) && (MoveDownFlag == true || MoveUpFlag == true))
+        // {
+        //     Speed = Speed*0.7;
+        // }
+        // else
+        // {
+        //     Speed = SpeedFromStart;
+        // }
+        // if (MoveLeftFlag == true)
+        // {
+        //     // Console.WriteLine("!left");
+        //     if ((X - Speed) < 0)
+        //     {
+        //         X = 0;
+        //         // Console.WriteLine("!left_nope");
+        //     }
+        //     else
+        //     {
+        //         X = X-Speed;
+        //     }
+        // }
+        // if (MoveRightFlag == true)
+        // {
+        //     // Console.WriteLine("!right");
+        //     if ((X + Speed + Width) >  LevelWidth)
+        //     {
+        //         X = LevelWidth-Width;
+        //         // Console.WriteLine("!right_nope");
+        //     }
+        //     else
+        //     {
+        //         X = X+Speed;          
+        //     }
+        // }
+        // if (MoveUpFlag == true)
+        // {
+        //     // Console.WriteLine("!up");
+        //     if ((Y - Speed) < 0)
+        //     {
+        //         Y = 0;
+        //         // Console.WriteLine("!up_nope");
+        //     }
+        //     else
+        //     {
+        //         Y = Y-Speed;
+        //     }
+        // }
+        // if (MoveDownFlag == true)
+        // {
+        //     // Console.WriteLine("!down");
+        //     if ((Y + Speed + Height) > LevelHeight)
+        //     {
+        //         Y = LevelHeight-Height;
+        //         // Console.WriteLine("!down_nope");
+        //     }
+        //     else
+        //     {
+        //         Y = Y+Speed;
+        //     }
+        // }
 }

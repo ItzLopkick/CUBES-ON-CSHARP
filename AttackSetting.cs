@@ -6,11 +6,11 @@ using System.Windows.Media.Imaging;
 class AttackSettings
 {
     public double attacklength;
-    public List<Attack> attacks;
+    public double attackTime;
 
-    public AttackSettings(double attacklength,List<Attack> attacks)
+    public AttackSettings(double attacklength)
     {
-        this.attacklength = attacklength;
-        this.attacks = attacks;
+        this.attacklength = attacklength*100;
+        this.attackTime = 0;
     }
 }

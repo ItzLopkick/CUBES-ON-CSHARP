@@ -1,4 +1,1 @@
-Здравствуйте короче RMusic это для музыки
-А RSound это для звуков
-ПОТОМУ ЧТО ДОЛБЫНЫЙ С#-NAAUDIO НЕ МОЖЕТ ИГРАТЬ 2 АУДИА За РАЗ;
-И кстати я исправил проблему из а которой всё искала в бин
+So to open it NORMALLY open bin/dedbug/net10.0-windows and there is GraphicTest.exe

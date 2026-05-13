@@ -26,7 +26,7 @@ public static class Program
 public class Game:Window
 {
     private static readonly WaveOutEvent waveOut = new();
-    bool AttackOver = false;
+    bool AttackFlag = false;
     double AttackTime = 0;
     double meteorsvalue = 20;
     double buttonselected = 1;
@@ -47,25 +47,31 @@ public class Game:Window
     Image PlayerBTL;
     Image EnemySprite;
     Enemy Enemy1;
-    Image Arena;
+    Image ArenaSprite;
     Image StephBar;
     TextBox PlayerHp;
+    Timer Exiting;
     AttackSettings attackSettings;
+    Arena arena;
     // Sounds
     Sound RMusic = new Sound();
     Sound RSound = new Sound();
 
     // RANDOM
     Random random = new Random();
-    public Game() // ничо не исправлять
+    public Game()
     {
         // Озон . Настройка окна
         var gcanvas = new Canvas{};
         Content = gcanvas;
         MessageBox.Show("Version 1.7");
         Title = "The rain test";
-        Width = 1000;
-        Height = 1000;
+        // Width = 1000;
+        // Height = 1000;
+        this.WindowState = WindowState.Maximized;
+        this.WindowStyle = WindowStyle.None;
+        this.Topmost = true;
+        this.ResizeMode = ResizeMode.NoResize;
         Icon = new BitmapImage(new Uri("assets/app.ico",UriKind.Relative));
         Background = Brushes.Black;
         // Короче это привазка функции к клавиатуре и создаём Loaded
@@ -80,14 +86,25 @@ public class Game:Window
             RSound.PlaySound("assets/sounds/metal.mp3");
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
+            // Arena!!!
+            ArenaSprite = new Image
+            {
+                Width = 500,
+                Height = 500,
+                Source = new BitmapImage(new Uri("assets/btlarena.png",UriKind.Relative))
+            };
+            Arena arena = new Arena(ArenaSprite,shirinaOkna/2-250,vusotaOkna/2-250,500,500,shirinaOkna/2-235,vusotaOkna/2-235,520,520); //-235 -220
+            gcanvas.Children.Add(arena.sprite);
+            Canvas.SetLeft(arena.sprite,arena.spriteX);
+            Canvas.SetTop(arena.sprite,arena.spriteY);
 
             playersprite = new Image
             {
-                Width = 100,
-                Height = 100,
+                Width = 50,
+                Height = 50,
                 Source = new BitmapImage(new Uri("assets/player.png",UriKind.Relative))
             };
-            player = new Player(playersprite,100,0,7,10,100,100,15,4);
+            player = new Player(playersprite,100,shirinaOkna/2-200,vusotaOkna/2,10,100,100,15,4);  // shirinaOkna/2-200,vusotaOkna/2
             PlayerBTL = new Image
             {
                 Width = 200,
@@ -121,10 +138,10 @@ public class Game:Window
                 Height = 100,
                 Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
             };
-            AttackBtn = new BtlButton(AttckBtnSprite,shirinaOkna/2+300,vusotaOkna-100,100,100,false,true);
-            ActBtn = new BtlButton(ActBtnSprite,shirinaOkna/2+400,vusotaOkna-100,100,100,false,false);
-            SpareBtn = new BtlButton(SpareBtnSprite,shirinaOkna/2+500,vusotaOkna-100,100,100,false,false);
-            BlockBtn = new BtlButton(BlockBtnSprite,shirinaOkna/2+600,vusotaOkna-100,100,100,false,false);
+            AttackBtn = new BtlButton(AttckBtnSprite,shirinaOkna/2-150,vusotaOkna-100,100,100,false,true);
+            ActBtn = new BtlButton(ActBtnSprite,shirinaOkna/2-50,vusotaOkna-100,100,100,false,false);
+            SpareBtn = new BtlButton(SpareBtnSprite,shirinaOkna/2+50,vusotaOkna-100,100,100,false,false);
+            BlockBtn = new BtlButton(BlockBtnSprite,shirinaOkna/2+150,vusotaOkna-100,100,100,false,false);
 
             StephBar = new Image
             {
@@ -133,7 +150,7 @@ public class Game:Window
                 Source = new BitmapImage(new Uri("assets/Stephsbar.png",UriKind.Relative))
             };
             gcanvas.Children.Add(StephBar);
-            Canvas.SetLeft(StephBar,shirinaOkna/2+350);
+            Canvas.SetLeft(StephBar,shirinaOkna/2-100);
             Canvas.SetTop(StephBar,vusotaOkna-150);
             PlayerHp = new TextBox
             {
@@ -141,22 +158,24 @@ public class Game:Window
                 Height = 20,
                 Text = ""+player.hp
             };
+            PlayerHp.Foreground = Brushes.White;
+            PlayerHp.Background = Brushes.Black;
+            PlayerHp.FontFamily = new FontFamily("Georgia");
+            PlayerHp.IsHitTestVisible = false;
+            TextOptions.SetTextFormattingMode(PlayerHp, TextFormattingMode.Display);
+            TextOptions.SetTextRenderingMode(PlayerHp, TextRenderingMode.Aliased);
             gcanvas.Children.Add(PlayerHp);
             Canvas.SetLeft(PlayerHp,shirinaOkna/2+400);
             Canvas.SetTop(PlayerHp,vusotaOkna-150);
-            //attack setting
-            AttackSettings attackSettings = new AttackSettings(2000,meteors);
+            // Attack :)
+            // Setings :)
+            AttackSettings attackSettings = new AttackSettings
+            (
+                20    // Time
+            );
+            // Timers
+            Timer Exiting = new Timer(5);
 
-            //Arena / backround
-            Arena = new Image
-            {
-                Width = 500,
-                Height = 500,
-                Source = new BitmapImage(new Uri("assets/btlarena.png",UriKind.Relative))
-            };
-            gcanvas.Children.Add(Arena);
-            Canvas.SetLeft(Arena,shirinaOkna/2-500);
-            Canvas.SetTop(Arena,vusotaOkna/2);
 
             gcanvas.Children.Add(player.Sprite);
             gcanvas.Children.Add(PlayerBTL);
@@ -193,19 +212,18 @@ public class Game:Window
             {
                 shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
                 vusotaOkna = this.ActualHeight-38; // круто
-                player.Controls(shirinaOkna,vusotaOkna);
+                player.Controls(arena.physX,arena.physY,arena.physWidth,arena.physHeight); 
                 Canvas.SetLeft(player.Sprite,player.X);
                 Canvas.SetTop(player.Sprite,player.Y);
                 Canvas.SetLeft(PlayerBTL, 50);
                 Canvas.SetTop(PlayerBTL,vusotaOkna/2);
 
-                Canvas.SetLeft(Arena,shirinaOkna/2-220);
-                Canvas.SetTop(Arena,vusotaOkna/2-250);
                 PlayerHp.Text = ""+player.hp;
 
 
-                if (AttackOver == false)
+                if (AttackFlag == true)
                 {
+                    player.Speed = player.SpeedFromStart;
                     foreach (Attack meteor in meteors)
                     {
                         meteor.Undertale();
@@ -220,32 +238,25 @@ public class Game:Window
                             Canvas.SetTop(meteor.Sprite,meteor.Y);
                         }
                     }
-                }
-                else
-                {
-                    
+                    // :D
+                    attackSettings.attackTime = attackSettings.attackTime + 1;
+                    if (attackSettings.attackTime >= attackSettings.attacklength)
+                    {
+                        AttackFlag = false;
+                        attackSettings.attackTime = 0;
+                        MoveMeteorsOutOfBounds(meteors);
+                    }
                 }
                 
-                PlayerBTL.Source = new BitmapImage(
-                new Uri("assets/playerbtlidle.png", UriKind.Relative));
-                if (AttackOver == false)
-                {
-                    AttackTime = AttackTime +1;
-                    if (AttackTime > attackSettings.attacklength || AttackTime == attackSettings.attacklength)
-                    {
-                        AttackOver = true;
-                    }
-                    else
-                    {
-                        AttackOver = true;
-                        AttackTime = 0;
-                        
-                    }
-                }
-                else
-                {
-                    AttackTime = 0;
-                }
+                // Timers
+                Exiting.AddTime(Exiting.Time,Exiting.TimeMax,Exiting.IsTimerActive,Exiting.DoAction);
+
+
+
+
+
+
+
                 // tick
                 await Task.Delay(10);
             }
@@ -292,7 +303,7 @@ public class Game:Window
     }
     void HandlingKeysUp(object Sender,KeyEventArgs event2)
     {
-        if (AttackOver == false)
+        if (AttackFlag == true)
         {
             if (event2.Key == Key.Right)
             {
@@ -316,41 +327,45 @@ public class Game:Window
             }
             if (event2.Key == Key.C)
             {
-                AttackOver = false;
+                
             }
-            else
-            {
-                if (event2.Key == Key.Right)
-                {
-                    
-                }
-                if (event2.Key == Key.Up)
-                {
-                    
-                }
-                if (event2.Key == Key.Left)
-                {
-                    
-                }
-                if (event2.Key == Key.Down)
-                {
-                    
-                }
-                if (event2.Key == Key.LeftShift)
-                {
-                    
-                }
-                if (event2.Key == Key.C)
-                {
-                    AttackOver = false;
-                }
-            }
-            event2.Handled = true;
         }
+        // else if (AttackFlag == false)
+        // {
+        //     if (event2.Key == Key.Right)
+        //     {
+                    
+        //     }
+        //     if (event2.Key == Key.Up)
+        //     {
+                
+        //     }
+        //     if (event2.Key == Key.Left)
+        //     {
+                
+        //     }
+        //     if (event2.Key == Key.Down)
+        //     {
+                
+        //     }
+        //     if (event2.Key == Key.LeftShift)
+        //     {
+                
+        //     }
+        //     if (event2.Key == Key.C)
+        //     {
+                
+        //     }
+        // }
+        if (event2.Key == Key.Escape)
+        {
+            
+        }
+        event2.Handled = true;
     }
     void HandlingKeysDown(object Sender,KeyEventArgs event2)
     {
-        if (AttackOver == false)
+        if (AttackFlag == true)
         {
             if (event2.Key == Key.Right)
             {
@@ -372,13 +387,13 @@ public class Game:Window
             {
                 player.ShiftFlag = true;
             }
-            if (event2.Key == Key.C)
-            {
-                AttackOver = true;
-            }
         }
-        else
+        else if (AttackFlag == false)
         {
+            player.MoveLeftFlag = false;
+            player.MoveRightFlag = false;
+            player.MoveUpFlag = false;
+            player.MoveDownFlag = false;
             if (event2.Key == Key.Right)
                 {
                     if (buttonselected > 3)
@@ -391,10 +406,6 @@ public class Game:Window
                         buttonselected = buttonselected+1;
                         HandlingButtons();
                     }
-                }
-                if (event2.Key == Key.Up)
-                {
-                    
                 }
                 if (event2.Key == Key.Left)
                 {
@@ -409,40 +420,37 @@ public class Game:Window
                         HandlingButtons();
                     }
                 }
-                if (event2.Key == Key.Down)
-                {
-                    
-                }
-                if (event2.Key == Key.LeftShift)
-                {
-                    
-                }
-                if (event2.Key == Key.C)
-                {
-                    AttackOver = true;
-                }
-                if (event2.Key == Key.Enter)
+                if (event2.Key == Key.Enter && AttackFlag == false)
                 {
                     if (buttonselected == 0)
                     {
                         Enemy1.hp = Enemy1.hp - 20;
                         PlayerBTL.Source = new BitmapImage(
                         new Uri("assets/playerbtlhitattack.png", UriKind.Relative));
-                        AttackOver = false;
+                        AttackFlag = true;
+                        PlayerBTL.Source = new BitmapImage(new Uri("assets/playerbtlidle.png", UriKind.Relative));
                     }
                     if (buttonselected == 1)
                     {
-                        AttackOver = false;
+                        AttackFlag = true;
                     }
                     if (buttonselected == 2)
                     {
-                        AttackOver = false;
+                        AttackFlag = true;
                     }
                     if (buttonselected == 3)
                     {
-                        AttackOver = false;
+                        AttackFlag = true;
                     }
                 }
+        }
+        if (event2.Key == Key.Escape)
+        {
+            Exiting.Activate(Exiting.IsTimerActive);
+            if (Exiting.DoAction == true)
+            {
+                this.Close();
+            }
         }
         event2.Handled = true;
     }
@@ -451,22 +459,17 @@ public class Game:Window
     {
         for (int i = 0;i < value; i++)
         {
-            if (AttackOver == true)
-            {
-                while (AttackOver == true)
-                {
-                    foreach (Attack meteor in meteors)
-                    {
-                        Canvas.SetTop(meteor.Sprite,-1930921938129839);
-                    }
-                }
-            }
-            else
-            {
-                Rectangle meteorsprite = new Rectangle{Width = random.Next(70,100),Height = random.Next(70,100),Fill = Brushes.Red};
-                Attack meteor = new Attack(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),random.Next(-1000,1000),meteorsprite.Width,meteorsprite.Height,random.Next(15,25));
-                meteors.Add(meteor);
-            }
+            Rectangle meteorsprite = new Rectangle{Width = random.Next(70,100),Height = random.Next(70,100),Fill = Brushes.Red};
+            Attack meteor = new Attack(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),9999,meteorsprite.Width,meteorsprite.Height,random.Next(15,25));
+            meteors.Add(meteor);
+        }
+    }
+    void MoveMeteorsOutOfBounds(List<Attack> meteors)
+    {
+        foreach (Attack meteor in meteors)
+        {
+            meteor.Y = meteor.Y +9999;
+            Canvas.SetTop(meteor.Sprite,meteor.Y);
         }
     }
 }
