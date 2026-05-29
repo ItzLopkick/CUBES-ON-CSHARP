@@ -10,6 +10,8 @@ public class Player
     public double Speed;
     public double X;
     public double Y;
+    public double X2;
+    public double Y2;
     public double Width;
     public double Height;
     public double SpeedBuff;
@@ -37,6 +39,8 @@ public class Player
         this.MoveRightFlag = false;
         this.ShiftFlag = false;
         this.ButtonCount = ButtonCount;
+        this.X2 = X+Width;
+        this.Y2 = Y+Height;
     }
     public void Controls(double ArenaX, double ArenaY, double ArenaWidth, double ArenaHeight)
     {
@@ -64,11 +68,13 @@ public class Player
             if ((X - Speed) < ArenaX)
             {
                 X = ArenaX;
+                X2 = X+Width;
                 // Console.WriteLine("!left_nope");
             }
             else
             {
                 X = X-Speed;
+                X2 = X+Width;
             }
         }
         if (MoveRightFlag == true)
@@ -77,11 +83,13 @@ public class Player
             if ((X + Speed + Width) >  ArenaX2)
             {
                 X = ArenaX2-Width;
+                X2 = X+Width;
                 // Console.WriteLine("!right_nope");
             }
             else
             {
-                X = X+Speed;          
+                X = X+Speed;  
+                X2 = X+Width;        
             }
         }
         if (MoveUpFlag == true)
@@ -90,11 +98,13 @@ public class Player
             if ((Y - Speed) < ArenaY)
             {
                 Y = ArenaY;
+                Y2 = Y+Height;
                 // Console.WriteLine("!up_nope");
             }
             else
             {
                 Y = Y-Speed;
+                Y2 = Y+Height;
             }
         }
         if (MoveDownFlag == true)
@@ -103,11 +113,13 @@ public class Player
             if ((Y + Speed + Height) > ArenaY2)
             {
                 Y = ArenaY2-Height;
+                Y2 = Y+Height;
                 // Console.WriteLine("!down_nope");
             }
             else
             {
                 Y = Y+Speed;
+                Y2 = Y+Height;
             }
         }
     }

@@ -9,6 +9,8 @@ public class Attack
     public Rectangle Sprite;
     public double X;
     public double Y;
+    public double X2;
+    public double Y2;
     public double Speed;
     public double Width;
     public double Height;
@@ -20,9 +22,12 @@ public class Attack
         this.Width = Width;
         this.Height = Height;
         this.Speed = Speed;
+        this.X2 = X+Width;
+        this.Y2 = Y+Height;
     }
     public void Undertale()
     {
         this.Y = this.Y+this.Speed;
+        this.Y2 = this.Y+this.Width;
     }
 }

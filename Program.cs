@@ -28,7 +28,7 @@ public class Game:Window
     private static readonly WaveOutEvent waveOut = new();
     bool AttackFlag = false;
     double AttackTime = 0;
-    double meteorsvalue = 20;
+    double meteorsvalue = 1;
     double buttonselected = 1;
     List<Attack> meteors = new List<Attack>{};
     Image playersprite;
@@ -104,7 +104,7 @@ public class Game:Window
                 Height = 50,
                 Source = new BitmapImage(new Uri("assets/player.png",UriKind.Relative))
             };
-            player = new Player(playersprite,100,shirinaOkna/2-200,vusotaOkna/2,10,100,100,15,4);  // shirinaOkna/2-200,vusotaOkna/2
+            player = new Player(playersprite,100,shirinaOkna/2-200,vusotaOkna/2,5,100,100,15,4);  // shirinaOkna/2-200,vusotaOkna/2
             PlayerBTL = new Image
             {
                 Width = 200,
@@ -142,6 +142,8 @@ public class Game:Window
             ActBtn = new BtlButton(ActBtnSprite,shirinaOkna/2-50,vusotaOkna-100,100,100,false,false);
             SpareBtn = new BtlButton(SpareBtnSprite,shirinaOkna/2+50,vusotaOkna-100,100,100,false,false);
             BlockBtn = new BtlButton(BlockBtnSprite,shirinaOkna/2+150,vusotaOkna-100,100,100,false,false);
+
+
 
             StephBar = new Image
             {
@@ -213,24 +215,28 @@ public class Game:Window
                 shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
                 vusotaOkna = this.ActualHeight-38; // круто
                 player.Controls(arena.physX,arena.physY,arena.physWidth,arena.physHeight); 
+                
                 Canvas.SetLeft(player.Sprite,player.X);
                 Canvas.SetTop(player.Sprite,player.Y);
                 Canvas.SetLeft(PlayerBTL, 50);
                 Canvas.SetTop(PlayerBTL,vusotaOkna/2);
 
                 PlayerHp.Text = ""+player.hp;
-
-
+                Console.WriteLine(player.X+" "+player.X2);
+                Console.WriteLine(player.Y+" "+player.Y2);
                 if (AttackFlag == true)
                 {
                     player.Speed = player.SpeedFromStart;
                     foreach (Attack meteor in meteors)
                     {
+                        if (CollisionsS.has_objects_collision(meteor,player) == true)
+                        {
+                            player.hp = player.hp - 1;
+                        }
                         meteor.Undertale();
                         Canvas.SetTop(meteor.Sprite,meteor.Y);
                         if (meteor.Y > vusotaOkna)
                         {
-
                             meteor.X = random.Next(0,Convert.ToInt32(shirinaOkna));
                             meteor.Y = random.Next(-6000,-500);
 
@@ -459,8 +465,10 @@ public class Game:Window
     {
         for (int i = 0;i < value; i++)
         {
-            Rectangle meteorsprite = new Rectangle{Width = random.Next(70,100),Height = random.Next(70,100),Fill = Brushes.Red};
-            Attack meteor = new Attack(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),9999,meteorsprite.Width,meteorsprite.Height,random.Next(15,25));
+            double Width = random.Next(70,100);
+            double Height = random.Next(70,100);
+            Rectangle meteorsprite = new Rectangle{Width = Width,Height = Height,Fill = Brushes.Red};
+            Attack meteor = new Attack(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),9999,Width,Height,6);
             meteors.Add(meteor);
         }
     }
