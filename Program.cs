@@ -13,6 +13,7 @@ using System.Media;
 using NAudio;
 using NAudio.Wave;
 
+
 public static class Program
 {
     [System.STAThread]
@@ -28,7 +29,7 @@ public class Game:Window
     private static readonly WaveOutEvent waveOut = new();
     bool AttackFlag = false;
     double AttackTime = 0;
-    double meteorsvalue = 1;
+    double meteorsvalue = 10;
     double buttonselected = 1;
     List<Attack> meteors = new List<Attack>{};
     Image playersprite;
@@ -93,7 +94,18 @@ public class Game:Window
                 Height = 500,
                 Source = new BitmapImage(new Uri("assets/btlarena.png",UriKind.Relative))
             };
-            Arena arena = new Arena(ArenaSprite,shirinaOkna/2-250,vusotaOkna/2-250,500,500,shirinaOkna/2-235,vusotaOkna/2-235,520,520); //-235 -220
+            arena = new Arena(
+                ArenaSprite,
+                Math.Round(shirinaOkna/2-250),
+                Math.Round(vusotaOkna/2-250),
+                500,
+                500,
+                Math.Round(shirinaOkna/2-235),
+                Math.Round(vusotaOkna/2-235),
+                520,
+                520
+            );
+            Console.WriteLine(arena.spriteX+" "+arena.spriteX2);
             gcanvas.Children.Add(arena.sprite);
             Canvas.SetLeft(arena.sprite,arena.spriteX);
             Canvas.SetTop(arena.sprite,arena.spriteY);
@@ -104,11 +116,21 @@ public class Game:Window
                 Height = 50,
                 Source = new BitmapImage(new Uri("assets/player.png",UriKind.Relative))
             };
-            player = new Player(playersprite,100,shirinaOkna/2-200,vusotaOkna/2,5,100,100,15,4);  // shirinaOkna/2-200,vusotaOkna/2
+            player = new Player(
+                playersprite,
+                100,
+                shirinaOkna/2-200,
+                vusotaOkna/2,
+                5,
+                50,
+                50,
+                15,
+                4
+            );
             PlayerBTL = new Image
             {
-                Width = 200,
-                Height = 227,
+                Width = 300,
+                Height = 327,
                 Source = new BitmapImage(new Uri("assets/playerbtlidle.png",UriKind.Relative))
             };
 
@@ -237,12 +259,12 @@ public class Game:Window
                         Canvas.SetTop(meteor.Sprite,meteor.Y);
                         if (meteor.Y > vusotaOkna)
                         {
-                            meteor.X = random.Next(0,Convert.ToInt32(shirinaOkna));
+                            meteor.X = random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2));
                             meteor.Y = random.Next(-6000,-500);
 
                             Canvas.SetLeft(meteor.Sprite,meteor.X);
                             Canvas.SetTop(meteor.Sprite,meteor.Y);
-                        }
+                        } // Я дядя редит
                     }
                     // :D
                     attackSettings.attackTime = attackSettings.attackTime + 1;
@@ -465,10 +487,18 @@ public class Game:Window
     {
         for (int i = 0;i < value; i++)
         {
-            double Width = random.Next(70,100);
-            double Height = random.Next(70,100);
-            Rectangle meteorsprite = new Rectangle{Width = Width,Height = Height,Fill = Brushes.Red};
-            Attack meteor = new Attack(meteorsprite,random.Next(0,Convert.ToInt32(shirinaOkna)),9999,Width,Height,6);
+            double MeteorWidth = random.Next(70,100);
+            double MeteorHeight = random.Next(70,100);
+            Rectangle meteorsprite = new Rectangle{Width = MeteorWidth,Height = MeteorHeight,Fill = Brushes.Red};
+            Console.WriteLine("Cordinates : "+arena.spriteX+" "+arena.spriteX2);
+            Attack meteor = new Attack(
+                meteorsprite,
+                random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2)),
+                3000,
+                MeteorWidth,
+                MeteorHeight,
+                6
+            );
             meteors.Add(meteor);
         }
     }
