@@ -102,8 +102,8 @@ public class Game:Window
                 500,
                 Math.Round(shirinaOkna/2-235),
                 Math.Round(vusotaOkna/2-235),
-                520,
-                520
+                465,
+                465
             );
             Console.WriteLine(arena.spriteX+" "+arena.spriteX2);
             gcanvas.Children.Add(arena.sprite);
@@ -117,15 +117,15 @@ public class Game:Window
                 Source = new BitmapImage(new Uri("assets/player.png",UriKind.Relative))
             };
             player = new Player(
-                playersprite,
-                100,
-                shirinaOkna/2-200,
-                vusotaOkna/2,
-                5,
-                50,
-                50,
-                15,
-                4
+                playersprite, // sprite
+                100, //hp
+                shirinaOkna/2-200, //spawnX
+                vusotaOkna/2, //spawnY
+                5, // speedfromstart
+                50, //width
+                50, // height
+                15, // sprintspeed
+                4 // ishowspeed said it is "BUTTON COUNT *HAW HAW"
             );
             PlayerBTL = new Image
             {
@@ -261,6 +261,8 @@ public class Game:Window
                         {
                             meteor.X = random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2));
                             meteor.Y = random.Next(-6000,-500);
+                            meteor.X2 = meteor.X + meteor.Width;
+                            meteor.Y2 = meteor.Y + meteor.Height;
 
                             Canvas.SetLeft(meteor.Sprite,meteor.X);
                             Canvas.SetTop(meteor.Sprite,meteor.Y);
@@ -493,8 +495,8 @@ public class Game:Window
             Console.WriteLine("Cordinates : "+arena.spriteX+" "+arena.spriteX2);
             Attack meteor = new Attack(
                 meteorsprite,
-                random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2)),
-                3000,
+                random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2)), // X
+                3000, // Y
                 MeteorWidth,
                 MeteorHeight,
                 6

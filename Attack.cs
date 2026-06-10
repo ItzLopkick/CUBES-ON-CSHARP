@@ -28,6 +28,6 @@ public class Attack
     public void Undertale()
     {
         this.Y = this.Y+this.Speed;
-        this.Y2 = this.Y+this.Width;
+        this.Y2 = this.Y+this.Height;
     }
 }

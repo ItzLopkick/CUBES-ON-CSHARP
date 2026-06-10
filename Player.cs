@@ -46,149 +46,81 @@ public class Player
     {
         double ArenaX2 = ArenaX+ArenaWidth;
         double ArenaY2 = ArenaY+ArenaHeight;
-        if (ShiftFlag == true)
+        if (this.ShiftFlag == true)
         {
-            Speed = SpeedBuff;
+            this.Speed = this.SpeedBuff;
         }
         else
         {
-            Speed = SpeedFromStart;
+            this.Speed = this.SpeedFromStart;
         }
-        if ((MoveRightFlag == true || MoveLeftFlag == true) && (MoveDownFlag == true || MoveUpFlag == true))
+        if ((this.MoveRightFlag == true || this.MoveLeftFlag == true) && (this.MoveDownFlag == true || this.MoveUpFlag == true))
         {
-            Speed = Speed*0.7;
+            Speed = this.Speed*0.7;
         }
         else
         {
-            Speed = SpeedFromStart;
+            this.Speed = this.SpeedFromStart;
         }
-        if (MoveLeftFlag == true)
+        if (this.MoveLeftFlag == true)
         {
             // Console.WriteLine("!left");
-            if ((X - Speed) < ArenaX)
+            if ((this.X - this.Speed) < ArenaX)
             {
-                X = ArenaX;
-                X2 = X+Width;
+                this.X = ArenaX;
+                this.X2 = this.X+this.Width;
                 // Console.WriteLine("!left_nope");
             }
             else
             {
-                X = X-Speed;
-                X2 = X+Width;
+                this.X = this.X-this.Speed;
+                this.X2 = X+this.Width;
             }
         }
         if (MoveRightFlag == true)
         {
             // Console.WriteLine("!right");
-            if ((X + Speed + Width) >  ArenaX2)
+            if ((this.X + this.Speed + this.Width) >  ArenaX2)
             {
-                X = ArenaX2-Width;
-                X2 = X+Width;
+                this.X = ArenaX2-this.Width;
+                this.X2 = X+this.Width;
                 // Console.WriteLine("!right_nope");
             }
             else
             {
-                X = X+Speed;  
-                X2 = X+Width;        
+                this.X = X+this.Speed;  
+                this.X2 = X+this.Width;        
             }
         }
-        if (MoveUpFlag == true)
+        if (this.MoveUpFlag == true)
         {
             // Console.WriteLine("!up");
-            if ((Y - Speed) < ArenaY)
+            if ((this.Y - this.Speed) < ArenaY)
             {
-                Y = ArenaY;
-                Y2 = Y+Height;
+                this.Y = ArenaY;
+                this.Y2 = this.Y+this.Height;
                 // Console.WriteLine("!up_nope");
             }
             else
             {
-                Y = Y-Speed;
-                Y2 = Y+Height;
+                this.Y = this.Y-this.Speed;
+                this.Y2 = this.Y+this.Height;
             }
         }
-        if (MoveDownFlag == true)
+        if (this.MoveDownFlag == true)
         {
             // Console.WriteLine("!down");
-            if ((Y + Speed + Height) > ArenaY2)
+            if ((this.Y + this.Speed + this.Height) > ArenaY2)
             {
-                Y = ArenaY2-Height;
-                Y2 = Y+Height;
+                this.Y = ArenaY2-this.Height;
+                this.Y2 = this.Y+this.Height;
                 // Console.WriteLine("!down_nope");
             }
             else
             {
-                Y = Y+Speed;
-                Y2 = Y+Height;
+                this.Y = this.Y+this.Speed;
+                this.Y2 = this.Y+this.Height;
             }
         }
     }
-    // if (ShiftFlag == true)
-        // {
-        //     Speed = SpeedBuff;
-        // }
-        // else
-        // {
-        //     Speed = SpeedFromStart;
-        // }
-        // if ((MoveRightFlag == true || MoveLeftFlag == true) && (MoveDownFlag == true || MoveUpFlag == true))
-        // {
-        //     Speed = Speed*0.7;
-        // }
-        // else
-        // {
-        //     Speed = SpeedFromStart;
-        // }
-        // if (MoveLeftFlag == true)
-        // {
-        //     // Console.WriteLine("!left");
-        //     if ((X - Speed) < 0)
-        //     {
-        //         X = 0;
-        //         // Console.WriteLine("!left_nope");
-        //     }
-        //     else
-        //     {
-        //         X = X-Speed;
-        //     }
-        // }
-        // if (MoveRightFlag == true)
-        // {
-        //     // Console.WriteLine("!right");
-        //     if ((X + Speed + Width) >  LevelWidth)
-        //     {
-        //         X = LevelWidth-Width;
-        //         // Console.WriteLine("!right_nope");
-        //     }
-        //     else
-        //     {
-        //         X = X+Speed;          
-        //     }
-        // }
-        // if (MoveUpFlag == true)
-        // {
-        //     // Console.WriteLine("!up");
-        //     if ((Y - Speed) < 0)
-        //     {
-        //         Y = 0;
-        //         // Console.WriteLine("!up_nope");
-        //     }
-        //     else
-        //     {
-        //         Y = Y-Speed;
-        //     }
-        // }
-        // if (MoveDownFlag == true)
-        // {
-        //     // Console.WriteLine("!down");
-        //     if ((Y + Speed + Height) > LevelHeight)
-        //     {
-        //         Y = LevelHeight-Height;
-        //         // Console.WriteLine("!down_nope");
-        //     }
-        //     else
-        //     {
-        //         Y = Y+Speed;
-        //     }
-        // }
 }
