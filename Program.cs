@@ -228,9 +228,11 @@ public class Game:Window
             {
                 Width = 100,
                 Height = 100,
-                Fill = Brushes.Aqua
+                Fill = Brushes.White
             };
             CC = new Attack2(CoolCubeSprite,0,9999,100,100);
+            gcanvas.Children.Add(CC.Sprite);
+            Canvas.SetTop(CC.Sprite,CC.Y);
             CreateMeteors(meteorsvalue);
             foreach (Attack meteor in meteors)
             {
@@ -242,8 +244,10 @@ public class Game:Window
             buttons.Add(ActBtn.IsActive);
             buttons.Add(SpareBtn.IsActive);
             buttons.Add(BlockBtn.IsActive);
+
             while (1 == 1)
             {
+
                 shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
                 vusotaOkna = this.ActualHeight-38; // круто
                 player.Controls(arena.physX,arena.physY,arena.physWidth,arena.physHeight); 
@@ -292,11 +296,13 @@ public class Game:Window
                     }
                     if (BattleFlag == true && wave == 2)
                     {   // Я дядя редит |:
-                        Console.WriteLine("Wave 2 begun");
+                        Console.WriteLine(attackSettings.attackTime+" "+attackSettings.attacklength);
                         if (attackSettings.attackTime == 0)
                         {
-                            Console.WriteLine("1");
                             CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
+                            Canvas.SetLeft(CC.Sprite,CC.X);
+                            Canvas.SetTop(CC.Sprite,CC.Y);
+                            Console.WriteLine("Cubespawned"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
                         }
                         if (CC.IsApear == true)
                         {
@@ -305,14 +311,20 @@ public class Game:Window
                                 if (attackSettings.attackTime%30 == 0)
                                 {
                                     CC.Agresive = true;
+                                    CC.Sprite.Fill = Brushes.Red;
+                                    Console.WriteLine("CubeAgresiveLevelChanged"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
                                 }
                             }
                             if (CC.Agresive == true)
                             {
-
+                                
                                 if (attackSettings.attackTime%250 == 0)
                                     {
+                                        CC.Sprite.Fill = Brushes.White;
                                         CC.Disapear();
+                                        Console.WriteLine("CubeDspwnd"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
+                                        Canvas.SetLeft(CC.Sprite,CC.X);
+                                        Canvas.SetTop(CC.Sprite,CC.Y);
                                     }
                             }
                         }
@@ -321,6 +333,9 @@ public class Game:Window
                             if (attackSettings.attackTime%270 == 0)
                                 {
                                     CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
+                                    Console.WriteLine("Cuberespawned"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
+                                    Canvas.SetLeft(CC.Sprite,CC.X);
+                                    Canvas.SetTop(CC.Sprite,CC.Y);
                                 }
                         }
                         attackSettings.attackTime = attackSettings.attackTime + 1;
@@ -330,6 +345,9 @@ public class Game:Window
                             AttackFlag2 = false;
                             attackSettings.attackTime = 0;
                             CC.Disapear();
+                            CC.Sprite.Fill = Brushes.White;
+                            Canvas.SetLeft(CC.Sprite,CC.X);
+                            Canvas.SetTop(CC.Sprite,CC.Y);
                         }
                 }
                 
