@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GraphicTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72286aba0cd57e350bdd512660b26c507c5044cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f31b0a10602c6a55066a701da594e246b1bff285")]
 [assembly: System.Reflection.AssemblyProductAttribute("GraphicTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GraphicTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -87,7 +87,6 @@ public class Game:Window
         // MAIN CODE HERE
         {
             RMusic.PlayLoop("assets/sounds/Run.mp3");
-            RSound.PlaySound("assets/sounds/metal.mp3");
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
             // Arena!!!
@@ -265,7 +264,7 @@ public class Game:Window
                     {
                         foreach (Attack meteor in meteors)
                         {
-                            if (CollisionsS.has_objects_collision(meteor,player) == true)
+                            if (CollisionsS.has_objects_collision(meteor,player) == true && attackSettings.attackTime%10 == 0)
                             {
                                 player.hp = player.hp - 1;
                             }
@@ -296,33 +295,32 @@ public class Game:Window
                     }
                     if (BattleFlag == true && wave == 2)
                     {   // Я дядя редит |:
-                        Console.WriteLine(attackSettings.attackTime+" "+attackSettings.attacklength);
                         if (attackSettings.attackTime == 0)
                         {
                             CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
                             Canvas.SetLeft(CC.Sprite,CC.X);
                             Canvas.SetTop(CC.Sprite,CC.Y);
-                            Console.WriteLine("Cubespawned"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
                         }
                         if (CC.IsApear == true)
                         {
                             if (CC.Agresive == false)
                             {
-                                if (attackSettings.attackTime%30 == 0)
+                                if (attackSettings.attackTime%130 == 0)
                                 {
                                     CC.Agresive = true;
                                     CC.Sprite.Fill = Brushes.Red;
-                                    Console.WriteLine("CubeAgresiveLevelChanged"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
                                 }
                             }
                             if (CC.Agresive == true)
                             {
-                                
+                                if (CollisionsS.has_objects_collision(CC,player) == true && attackSettings.attackTime%10 == 0)
+                                {
+                                    player.hp = player.hp - 2;
+                                }
                                 if (attackSettings.attackTime%250 == 0)
                                     {
                                         CC.Sprite.Fill = Brushes.White;
                                         CC.Disapear();
-                                        Console.WriteLine("CubeDspwnd"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
                                         Canvas.SetLeft(CC.Sprite,CC.X);
                                         Canvas.SetTop(CC.Sprite,CC.Y);
                                     }
@@ -333,7 +331,6 @@ public class Game:Window
                             if (attackSettings.attackTime%270 == 0)
                                 {
                                     CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
-                                    Console.WriteLine("Cuberespawned"+":"+CC.X+" "+CC.Y+" Agrsive:"+CC.Agresive+" Visible?:"+CC.IsApear);
                                     Canvas.SetLeft(CC.Sprite,CC.X);
                                     Canvas.SetTop(CC.Sprite,CC.Y);
                                 }
