@@ -27,7 +27,10 @@ public static class Program
 public class Game:Window
 {
     private static readonly WaveOutEvent waveOut = new();
-    bool AttackFlag = false;
+    double wave = 2;
+    bool BattleFlag = false;
+    bool Attack1Flag = false;
+    bool AttackFlag2 = false;
     double AttackTime = 0;
     double meteorsvalue = 10;
     double buttonselected = 1;
@@ -51,7 +54,7 @@ public class Game:Window
     Image ArenaSprite;
     Image StephBar;
     TextBox PlayerHp;
-    Timer Exiting;
+    Attack2 CC;
     AttackSettings attackSettings;
     Arena arena;
     // Sounds
@@ -221,6 +224,13 @@ public class Game:Window
             Canvas.SetLeft(BlockBtn.Sprite, BlockBtn.X);
             Canvas.SetTop(BlockBtn.Sprite,BlockBtn.Y);
 
+            Rectangle CoolCubeSprite = new Rectangle
+            {
+                Width = 100,
+                Height = 100,
+                Fill = Brushes.Aqua
+            };
+            CC = new Attack2(CoolCubeSprite,0,9999,100,100);
             CreateMeteors(meteorsvalue);
             foreach (Attack meteor in meteors)
             {
@@ -244,42 +254,87 @@ public class Game:Window
                 Canvas.SetTop(PlayerBTL,vusotaOkna/2);
 
                 PlayerHp.Text = ""+player.hp;
-                Console.WriteLine(player.X+" "+player.X2);
-                Console.WriteLine(player.Y+" "+player.Y2);
-                if (AttackFlag == true)
+                if (BattleFlag == true && wave == 1)
                 {
                     player.Speed = player.SpeedFromStart;
-                    foreach (Attack meteor in meteors)
+                    if (wave == 1)
                     {
-                        if (CollisionsS.has_objects_collision(meteor,player) == true)
+                        foreach (Attack meteor in meteors)
                         {
-                            player.hp = player.hp - 1;
-                        }
-                        meteor.Undertale();
-                        Canvas.SetTop(meteor.Sprite,meteor.Y);
-                        if (meteor.Y > vusotaOkna)
-                        {
-                            meteor.X = random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2));
-                            meteor.Y = random.Next(-6000,-500);
-                            meteor.X2 = meteor.X + meteor.Width;
-                            meteor.Y2 = meteor.Y + meteor.Height;
-
-                            Canvas.SetLeft(meteor.Sprite,meteor.X);
+                            if (CollisionsS.has_objects_collision(meteor,player) == true)
+                            {
+                                player.hp = player.hp - 1;
+                            }
+                            meteor.Undertale();
                             Canvas.SetTop(meteor.Sprite,meteor.Y);
-                        } // Я дядя редит
+                            if (meteor.Y > vusotaOkna)
+                            {
+                                meteor.X = random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2));
+                                meteor.Y = random.Next(-6000,-500);
+                                meteor.X2 = meteor.X + meteor.Width;
+                                meteor.Y2 = meteor.Y + meteor.Height;
+
+                                Canvas.SetLeft(meteor.Sprite,meteor.X);
+                                Canvas.SetTop(meteor.Sprite,meteor.Y);
+                            } // Я дядя редит |:
+                        }
+                        // :D
+                        attackSettings.attackTime = attackSettings.attackTime + 1;
+                        if (attackSettings.attackTime >= attackSettings.attacklength)
+                        {
+                            BattleFlag = false;
+                            Attack1Flag = false;
+                            attackSettings.attackTime = 0;
+                            MoveMeteorsOutOfBounds(meteors);
+                        }
                     }
-                    // :D
-                    attackSettings.attackTime = attackSettings.attackTime + 1;
-                    if (attackSettings.attackTime >= attackSettings.attacklength)
-                    {
-                        AttackFlag = false;
-                        attackSettings.attackTime = 0;
-                        MoveMeteorsOutOfBounds(meteors);
+                    
                     }
+                    if (BattleFlag == true && wave == 2)
+                    {   // Я дядя редит |:
+                        Console.WriteLine("Wave 2 begun");
+                        if (attackSettings.attackTime == 0)
+                        {
+                            Console.WriteLine("1");
+                            CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
+                        }
+                        if (CC.IsApear == true)
+                        {
+                            if (CC.Agresive == false)
+                            {
+                                if (attackSettings.attackTime%30 == 0)
+                                {
+                                    CC.Agresive = true;
+                                }
+                            }
+                            if (CC.Agresive == true)
+                            {
+
+                                if (attackSettings.attackTime%250 == 0)
+                                    {
+                                        CC.Disapear();
+                                    }
+                            }
+                        }
+                        if (CC.IsApear == false)
+                        {
+                            if (attackSettings.attackTime%270 == 0)
+                                {
+                                    CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
+                                }
+                        }
+                        attackSettings.attackTime = attackSettings.attackTime + 1;
+                        if (attackSettings.attackTime >= attackSettings.attacklength)
+                        {
+                            BattleFlag = false;
+                            AttackFlag2 = false;
+                            attackSettings.attackTime = 0;
+                            CC.Disapear();
+                        }
                 }
                 
                 // Timers
-                Exiting.AddTime(Exiting.Time,Exiting.TimeMax,Exiting.IsTimerActive,Exiting.DoAction);
+                
 
 
 
@@ -333,7 +388,7 @@ public class Game:Window
     }
     void HandlingKeysUp(object Sender,KeyEventArgs event2)
     {
-        if (AttackFlag == true)
+        if (BattleFlag == true)
         {
             if (event2.Key == Key.Right)
             {
@@ -395,7 +450,7 @@ public class Game:Window
     }
     void HandlingKeysDown(object Sender,KeyEventArgs event2)
     {
-        if (AttackFlag == true)
+        if (BattleFlag == true)
         {
             if (event2.Key == Key.Right)
             {
@@ -418,7 +473,7 @@ public class Game:Window
                 player.ShiftFlag = true;
             }
         }
-        else if (AttackFlag == false)
+        else if (BattleFlag == false)
         {
             player.MoveLeftFlag = false;
             player.MoveRightFlag = false;
@@ -450,37 +505,33 @@ public class Game:Window
                         HandlingButtons();
                     }
                 }
-                if (event2.Key == Key.Enter && AttackFlag == false)
+                if (event2.Key == Key.Enter && BattleFlag == false)
                 {
                     if (buttonselected == 0)
                     {
                         Enemy1.hp = Enemy1.hp - 20;
                         PlayerBTL.Source = new BitmapImage(
                         new Uri("assets/playerbtlhitattack.png", UriKind.Relative));
-                        AttackFlag = true;
+                        BattleFlag = true;
                         PlayerBTL.Source = new BitmapImage(new Uri("assets/playerbtlidle.png", UriKind.Relative));
                     }
                     if (buttonselected == 1)
                     {
-                        AttackFlag = true;
+                        BattleFlag = true;
                     }
                     if (buttonselected == 2)
                     {
-                        AttackFlag = true;
+                        BattleFlag = true;
                     }
                     if (buttonselected == 3)
                     {
-                        AttackFlag = true;
+                        BattleFlag = true;
                     }
                 }
         }
         if (event2.Key == Key.Escape)
         {
-            Exiting.Activate(Exiting.IsTimerActive);
-            if (Exiting.DoAction == true)
-            {
-                this.Close();
-            }
+            
         }
         event2.Handled = true;
     }
@@ -492,7 +543,6 @@ public class Game:Window
             double MeteorWidth = random.Next(70,100);
             double MeteorHeight = random.Next(70,100);
             Rectangle meteorsprite = new Rectangle{Width = MeteorWidth,Height = MeteorHeight,Fill = Brushes.Red};
-            Console.WriteLine("Cordinates : "+arena.spriteX+" "+arena.spriteX2);
             Attack meteor = new Attack(
                 meteorsprite,
                 random.Next(Convert.ToInt32(arena.spriteX),Convert.ToInt32(arena.spriteX2)), // X

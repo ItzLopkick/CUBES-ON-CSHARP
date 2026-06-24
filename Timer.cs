@@ -12,7 +12,6 @@ using System;
 using System.Media;
 using NAudio;
 using NAudio.Wave;
-using System.Xml.Serialization;
 
 class Timer
 {
