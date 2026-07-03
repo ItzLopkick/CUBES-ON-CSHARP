@@ -33,3 +33,12 @@ C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\playerbtlhitat
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\btlarena.png
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Stephsbar.png
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\AttackButtonSelected.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat1.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat2.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat3.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat4.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat5.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat6.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat7.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat8.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EatingTest\LopkickEat9.png

@@ -48,7 +48,8 @@ public class Game:Window
     Image BlockBtnSprite;
     BtlButton BlockBtn;
     List<bool> buttons = new List<bool>{};
-    Image PlayerBTL;
+
+    PlayerBtl Playerbtl;
     Image EnemySprite;
     Enemy Enemy1;
     Image ArenaSprite;
@@ -60,6 +61,11 @@ public class Game:Window
     // Sounds
     Sound RMusic = new Sound();
     Sound RSound = new Sound();
+
+
+
+    bool HealFlag = false;
+    bool HitAnimFlag = false;
 
     // RANDOM
     Random random = new Random();
@@ -129,13 +135,7 @@ public class Game:Window
                 15, // sprintspeed
                 4 // ishowspeed said it is "BUTTON COUNT *HAW HAW"
             );
-            PlayerBTL = new Image
-            {
-                Width = 300,
-                Height = 327,
-                Source = new BitmapImage(new Uri("assets/playerbtlidle.png",UriKind.Relative))
-            };
-
+            Playerbtl = new PlayerBtl(50,vusotaOkna/2,500,500);
             Enemy1 = new Enemy(EnemySprite,0,250);
             // GUI buttons / bar
             AttckBtnSprite = new Image
@@ -171,13 +171,13 @@ public class Game:Window
 
             StephBar = new Image
             {
-                Width = 250,
-                Height = 50,
+                Width = 500,
+                Height = 300,
                 Source = new BitmapImage(new Uri("assets/Stephsbar.png",UriKind.Relative))
             };
             gcanvas.Children.Add(StephBar);
-            Canvas.SetLeft(StephBar,shirinaOkna/2-100);
-            Canvas.SetTop(StephBar,vusotaOkna-150);
+            Canvas.SetLeft(StephBar,shirinaOkna/2-50);
+            Canvas.SetTop(StephBar,vusotaOkna-50);
             PlayerHp = new TextBox
             {
                 Width = 100,
@@ -204,11 +204,11 @@ public class Game:Window
 
 
             gcanvas.Children.Add(player.Sprite);
-            gcanvas.Children.Add(PlayerBTL);
+            gcanvas.Children.Add(Playerbtl.Sprite);
             Canvas.SetLeft(player.Sprite, player.X);
             Canvas.SetTop(player.Sprite, player.Y);
-            Canvas.SetLeft(PlayerBTL, 50);
-            Canvas.SetTop(PlayerBTL,vusotaOkna/2);
+            Canvas.SetLeft(Playerbtl.Sprite, Playerbtl.X);
+            Canvas.SetTop(Playerbtl.Sprite,Playerbtl.Y);
 
             gcanvas.Children.Add(AttackBtn.Sprite);
             Canvas.SetLeft(AttackBtn.Sprite, AttackBtn.X);
@@ -246,17 +246,67 @@ public class Game:Window
 
             while (1 == 1)
             {
-
                 shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
                 vusotaOkna = this.ActualHeight-38; // круто
                 player.Controls(arena.physX,arena.physY,arena.physWidth,arena.physHeight); 
                 
                 Canvas.SetLeft(player.Sprite,player.X);
                 Canvas.SetTop(player.Sprite,player.Y);
-                Canvas.SetLeft(PlayerBTL, 50);
-                Canvas.SetTop(PlayerBTL,vusotaOkna/2);
+                // Canvas.SetLeft(Playerbtl.Sprite, Playerbtl.X);
+                // Canvas.SetTop(Playerbtl.Sprite,Playerbtl.Y);
 
                 PlayerHp.Text = ""+player.hp;
+                if (HealFlag == true)
+                {
+                    // Anim
+                    Playerbtl.Sprite.Source = Playerbtl.Animation2Bitmaps[Playerbtl.Animation2Frame];
+                    Console.WriteLine(Playerbtl.Animation2Bitmaps.Count);
+                    if (Playerbtl.Animation2Time%10 == 0)
+                    {
+                        if (Playerbtl.Animation2Frame < Playerbtl.Animation2Bitmaps.Count-1)
+                        {
+                            Playerbtl.Animation2Frame = Playerbtl.Animation2Frame+1;
+                            Playerbtl.Sprite.Source = Playerbtl.Animation2Bitmaps[Playerbtl.Animation2Frame];
+                        }
+                        else
+                        {
+                            Playerbtl.Sprite.Source = Playerbtl.DefaultSprite;
+                            Playerbtl.Animation2Frame = 0;
+                            Playerbtl.Animation2Time = 0;
+                            // Action
+                            player.hp = player.hp + 10;
+                            // End
+                            HealFlag = false;
+                            BattleFlag = true;
+                        }
+                    }
+                    Playerbtl.Animation2Time = Playerbtl.Animation2Time+1;
+                }
+                if (HitAnimFlag == true)
+                {
+                    // Anim
+                    Playerbtl.Sprite.Source = Playerbtl.HirtAnimBitmaps[Playerbtl.HirtAnimFrame];
+                    Console.WriteLine(Playerbtl.HirtAnimBitmaps.Count);
+                    if (Playerbtl.HirtAnimTime%10 == 0)
+                    {
+                        if (Playerbtl.HirtAnimFrame < Playerbtl.HirtAnimBitmaps.Count-1)
+                        {
+                            Playerbtl.HirtAnimFrame = Playerbtl.HirtAnimFrame+1;
+                            Playerbtl.Sprite.Source = Playerbtl.HirtAnimBitmaps[Playerbtl.HirtAnimFrame];
+                        }
+                        else
+                        {
+                            Playerbtl.Sprite.Source = Playerbtl.DefaultSprite;
+                            Playerbtl.HirtAnimFrame = 0;
+                            Playerbtl.HirtAnimTime = 0;
+                            // Action
+                            
+                            // End
+                            HitAnimFlag = false;
+                        }
+                    }
+                    Playerbtl.HirtAnimTime = Playerbtl.HirtAnimTime+1;
+                }
                 if (BattleFlag == true && wave == 1)
                 {
                     player.Speed = player.SpeedFromStart;
@@ -264,9 +314,10 @@ public class Game:Window
                     {
                         foreach (Attack meteor in meteors)
                         {
-                            if (CollisionsS.has_objects_collision(meteor,player) == true && attackSettings.attackTime%10 == 0)
+                            if (CollisionsS.has_objects_collision(meteor,player) == true && attackSettings.attackTime%40 == 0)
                             {
                                 player.hp = player.hp - 1;
+                                HitAnimFlag = true;
                             }
                             meteor.Undertale();
                             Canvas.SetTop(meteor.Sprite,meteor.Y);
@@ -313,9 +364,10 @@ public class Game:Window
                             }
                             if (CC.Agresive == true)
                             {
-                                if (CollisionsS.has_objects_collision(CC,player) == true && attackSettings.attackTime%10 == 0)
+                                if (CollisionsS.has_objects_collision(CC,player) == true && attackSettings.attackTime%40 == 0)
                                 {
                                     player.hp = player.hp - 2;
+                                    HitAnimFlag = true;
                                 }
                                 if (attackSettings.attackTime%250 == 0)
                                     {
@@ -525,14 +577,14 @@ public class Game:Window
                     if (buttonselected == 0)
                     {
                         Enemy1.hp = Enemy1.hp - 20;
-                        PlayerBTL.Source = new BitmapImage(
-                        new Uri("assets/playerbtlhitattack.png", UriKind.Relative));
+                        // Playerbtl.Source = new BitmapImage(
+                        // new Uri("assets/playerbtlhitattack.png", UriKind.Relative));
                         BattleFlag = true;
-                        PlayerBTL.Source = new BitmapImage(new Uri("assets/playerbtlidle.png", UriKind.Relative));
+                        // PlayerBTL.Source = new BitmapImage(new Uri("assets/playerbtlidle.png", UriKind.Relative));
                     }
                     if (buttonselected == 1)
                     {
-                        BattleFlag = true;
+                        HealFlag = true;
                     }
                     if (buttonselected == 2)
                     {
