@@ -16,6 +16,7 @@ public class Player
     public double Height;
     public double SpeedBuff;
     public double hp;
+    public double maxhp;
     public bool MoveUpFlag = false;
     public bool MoveRightFlag = false;
     public bool MoveDownFlag = false;
@@ -27,6 +28,7 @@ public class Player
     {
         this.Sprite = Sprite;
         this.hp = hp;
+        this.maxhp = hp;
         this.SpeedFromStart = SpeedFromStart;
         this.Speed = SpeedFromStart;
         this.X = X;

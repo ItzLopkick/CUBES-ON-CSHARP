@@ -12,6 +12,7 @@ using System;
 using System.Media;
 using NAudio;
 using NAudio.Wave;
+using System.Windows.Documents;
 
 
 public static class Program
@@ -27,7 +28,8 @@ public static class Program
 public class Game:Window
 {
     private static readonly WaveOutEvent waveOut = new();
-    double wave = 2;
+
+    double wave = 0;
     bool BattleFlag = false;
     bool Attack1Flag = false;
     bool AttackFlag2 = false;
@@ -92,6 +94,7 @@ public class Game:Window
         Loaded += async (_,__) => // :0
         // MAIN CODE HERE
         {
+            wave = 2;
             RMusic.PlayLoop("assets/sounds/Run.mp3");
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
@@ -142,25 +145,25 @@ public class Game:Window
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+                Source = new BitmapImage(new Uri("assets/Buttons/AttackBtn/AttackBtn1.png",UriKind.Relative))
             };
             ActBtnSprite = new Image
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+                Source = new BitmapImage(new Uri("assets/Buttons/ActBtn/Actbtn1.png",UriKind.Relative))
             };
             SpareBtnSprite = new Image
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+                Source = new BitmapImage(new Uri("assets/Buttons/AttackBtn/AttackBtn1.png",UriKind.Relative))
             };
             BlockBtnSprite = new Image
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative))
+                Source = new BitmapImage(new Uri("assets/Buttons/AttackBtn/AttackBtn1.png",UriKind.Relative))
             };
             AttackBtn = new BtlButton(AttckBtnSprite,shirinaOkna/2-150,vusotaOkna-100,100,100,false,true);
             ActBtn = new BtlButton(ActBtnSprite,shirinaOkna/2-50,vusotaOkna-100,100,100,false,false);
@@ -176,23 +179,25 @@ public class Game:Window
                 Source = new BitmapImage(new Uri("assets/Stephsbar.png",UriKind.Relative))
             };
             gcanvas.Children.Add(StephBar);
-            Canvas.SetLeft(StephBar,shirinaOkna/2-50);
-            Canvas.SetTop(StephBar,vusotaOkna-50);
+            Canvas.SetLeft(StephBar,shirinaOkna/2-250);
+            Canvas.SetTop(StephBar,vusotaOkna-250);
             PlayerHp = new TextBox
             {
-                Width = 100,
-                Height = 20,
-                Text = ""+player.hp
+                Width = 120,
+                Height = 25,
+                Text = ""+player.hp+"/"+player.maxhp,
+                FontFamily = null,
+                FontSize = 22,
+
+                Background = Brushes.White,
+                BorderBrush = Brushes.Black
             };
-            PlayerHp.Foreground = Brushes.White;
-            PlayerHp.Background = Brushes.Black;
-            PlayerHp.FontFamily = new FontFamily("Georgia");
             PlayerHp.IsHitTestVisible = false;
             TextOptions.SetTextFormattingMode(PlayerHp, TextFormattingMode.Display);
             TextOptions.SetTextRenderingMode(PlayerHp, TextRenderingMode.Aliased);
             gcanvas.Children.Add(PlayerHp);
-            Canvas.SetLeft(PlayerHp,shirinaOkna/2+400);
-            Canvas.SetTop(PlayerHp,vusotaOkna-150);
+            Canvas.SetLeft(PlayerHp,shirinaOkna/2+120);
+            Canvas.SetTop(PlayerHp,vusotaOkna-190);
             // Attack :)
             // Setings :)
             AttackSettings attackSettings = new AttackSettings
@@ -201,7 +206,6 @@ public class Game:Window
             );
             // Timers
             Timer Exiting = new Timer(5);
-
 
             gcanvas.Children.Add(player.Sprite);
             gcanvas.Children.Add(Playerbtl.Sprite);
@@ -255,7 +259,7 @@ public class Game:Window
                 // Canvas.SetLeft(Playerbtl.Sprite, Playerbtl.X);
                 // Canvas.SetTop(Playerbtl.Sprite,Playerbtl.Y);
 
-                PlayerHp.Text = ""+player.hp;
+                PlayerHp.Text = "LOL 123";
                 if (HealFlag == true)
                 {
                     // Anim
@@ -340,6 +344,7 @@ public class Game:Window
                             Attack1Flag = false;
                             attackSettings.attackTime = 0;
                             MoveMeteorsOutOfBounds(meteors);
+                            wave = random.Next(1,2);
                         }
                     }
                     
@@ -397,6 +402,7 @@ public class Game:Window
                             CC.Sprite.Fill = Brushes.White;
                             Canvas.SetLeft(CC.Sprite,CC.X);
                             Canvas.SetTop(CC.Sprite,CC.Y);
+                            wave = random.Next(1,2);
                         }
                 }
                 
@@ -422,35 +428,35 @@ public class Game:Window
         // число увиличивается и проверяет если нажата вправо-left (если число следуеше 2 3 4 1)
         if (buttonselected == 0)
         {
-            AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+            AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn2.png",UriKind.Relative));
         }
         if (buttonselected != 0)
         {
-            AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+            AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn1.png",UriKind.Relative));
         }
         if (buttonselected == 1)
         {
-            ActBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+            ActBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Actbtn/ActBtn2.png",UriKind.Relative));
         }
         if (buttonselected != 1)
         {
-            ActBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+            ActBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Actbtn/Actbtn1.png",UriKind.Relative));
         }
         if (buttonselected == 2)
         {
-            SpareBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+            SpareBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn2.png",UriKind.Relative));
         }
         if (buttonselected != 2)
         {
-            SpareBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+            SpareBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn1.png",UriKind.Relative));
         }
         if (buttonselected == 3)
         {
-            BlockBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButtonSelected.png",UriKind.Relative));
+            BlockBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn2.png",UriKind.Relative));
         }
         if (buttonselected != 3)
         {
-            BlockBtn.Sprite.Source = new BitmapImage(new Uri("assets/AttackButton.png",UriKind.Relative));
+            BlockBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn1.png",UriKind.Relative));
         }
     }
     void HandlingKeysUp(object Sender,KeyEventArgs event2)

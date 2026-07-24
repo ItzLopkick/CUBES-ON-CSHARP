@@ -6,12 +6,10 @@ using System.Windows.Media.Imaging;
 
 class Enemy
 {
-    public Image Sprite;
     public double sparepoints;
     public double hp;
     public Enemy(Image Sprite,double sparepoints,double hp)
     {
-        this.Sprite = Sprite;
         this.sparepoints = sparepoints;
         this.hp = hp;
     }
@@ -24,6 +22,17 @@ class Enemy
         else
         {
             // text
+        }
+    }
+    public void IfHpZero()
+    {
+        if (this.hp == 0 && this.hp < 0)
+        {
+            
+        }
+        else
+        {
+            
         }
     }
 }
