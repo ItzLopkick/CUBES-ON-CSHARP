@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Documents;
 using System.Security.Cryptography.X509Certificates;
+using System.Reflection.Metadata.Ecma335;
 
 class PlayerBtl
 {
@@ -31,10 +32,10 @@ class PlayerBtl
     };
     public List<BitmapImage> HirtAnimBitmaps = new List<BitmapImage>
     {
-        new BitmapImage(new Uri("assets/HirtAnim/LopkickHirt1.png",UriKind.Relative)),
-        new BitmapImage(new Uri("assets/HirtAnim/LopkickHirt2.png",UriKind.Relative)),
-        new BitmapImage(new Uri("assets/HirtAnim/LopkickHirt3.png",UriKind.Relative)),
-        new BitmapImage(new Uri("assets/HirtAnim/LopkickHirt4.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/HitAnim/LopkickHirt1.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/HitAnim/LopkickHirt2.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/HitAnim/LopkickHirt3.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/HitAnim/LopkickHirt4.png",UriKind.Relative)),
     };
     public BitmapImage DefaultSprite = new BitmapImage(new Uri("assets/playerbtlidle.png",UriKind.Relative));
     public double Animation2Time;

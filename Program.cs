@@ -186,7 +186,7 @@ public class Game:Window
                 Width = 120,
                 Height = 25,
                 Text = ""+player.hp+"/"+player.maxhp,
-                FontFamily = null,
+                FontFamily = new FontFamily("pack://application:,,,/Fonts/#deltarune HP font"),
                 FontSize = 22,
 
                 Background = Brushes.White,
@@ -259,12 +259,12 @@ public class Game:Window
                 // Canvas.SetLeft(Playerbtl.Sprite, Playerbtl.X);
                 // Canvas.SetTop(Playerbtl.Sprite,Playerbtl.Y);
 
-                PlayerHp.Text = "LOL 123";
+                PlayerHp.Text = ""+player.hp+"/"+player.maxhp;
                 if (HealFlag == true)
                 {
                     // Anim
                     Playerbtl.Sprite.Source = Playerbtl.Animation2Bitmaps[Playerbtl.Animation2Frame];
-                    Console.WriteLine(Playerbtl.Animation2Bitmaps.Count);
+                    Console.WriteLine("Heal anim styart");
                     if (Playerbtl.Animation2Time%10 == 0)
                     {
                         if (Playerbtl.Animation2Frame < Playerbtl.Animation2Bitmaps.Count-1)
@@ -290,9 +290,10 @@ public class Game:Window
                 {
                     // Anim
                     Playerbtl.Sprite.Source = Playerbtl.HirtAnimBitmaps[Playerbtl.HirtAnimFrame];
-                    Console.WriteLine(Playerbtl.HirtAnimBitmaps.Count);
+                    Console.WriteLine("Anim hurt start");
                     if (Playerbtl.HirtAnimTime%10 == 0)
                     {
+                        Console.WriteLine("Frame = "+Playerbtl.HirtAnimFrame);
                         if (Playerbtl.HirtAnimFrame < Playerbtl.HirtAnimBitmaps.Count-1)
                         {
                             Playerbtl.HirtAnimFrame = Playerbtl.HirtAnimFrame+1;
@@ -300,6 +301,7 @@ public class Game:Window
                         }
                         else
                         {
+                            Console.WriteLine("Write LINE");
                             Playerbtl.Sprite.Source = Playerbtl.DefaultSprite;
                             Playerbtl.HirtAnimFrame = 0;
                             Playerbtl.HirtAnimTime = 0;
