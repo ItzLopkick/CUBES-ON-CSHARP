@@ -16,6 +16,8 @@ public class Player
     public double Height;
     public double SpeedBuff;
     public double hp;
+
+    public double def;
     public double maxhp;
     public bool MoveUpFlag = false;
     public bool MoveRightFlag = false;
@@ -24,7 +26,7 @@ public class Player
     public bool ShiftFlag = false;
     public double SpeedFromStart;
     public double ButtonCount;
-    public Player(Image Sprite,double hp,double X,double Y,double SpeedFromStart,double Width, double Height, double SpeedBuff, double ButtonCount)
+    public Player(Image Sprite,double hp,double def,double X,double Y,double SpeedFromStart,double Width, double Height, double SpeedBuff, double ButtonCount)
     {
         this.Sprite = Sprite;
         this.hp = hp;

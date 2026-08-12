@@ -29,6 +29,7 @@ public class Game:Window
 {
     private static readonly WaveOutEvent waveOut = new();
 
+    double characters = 1;
     double wave = 0;
     bool BattleFlag = false;
     bool Attack1Flag = false;
@@ -51,10 +52,11 @@ public class Game:Window
     BtlButton BlockBtn;
     List<bool> buttons = new List<bool>{};
 
-    PlayerBtl Playerbtl;
+    PlayerBtl FirstCharacter;
     Image EnemySprite;
-    Enemy Enemy1;
+    EnemyBtl Enemy1;
     Image ArenaSprite;
+    Image MaxText;
     Image StephBar;
     TextBox PlayerHp;
     Attack2 CC;
@@ -63,6 +65,8 @@ public class Game:Window
     // Sounds
     Sound RMusic = new Sound();
     Sound RSound = new Sound();
+    //Timers
+    Timer MaxTextTimer = new Timer(2);
 
 
 
@@ -95,7 +99,7 @@ public class Game:Window
         // MAIN CODE HERE
         {
             wave = 2;
-            RMusic.PlayLoop("assets/sounds/Run.mp3");
+            RMusic.PlayLoop("assets/sounds/FM.mp3");
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
             // Arena!!!
@@ -121,6 +125,21 @@ public class Game:Window
             Canvas.SetLeft(arena.sprite,arena.spriteX);
             Canvas.SetTop(arena.sprite,arena.spriteY);
 
+            EnemySprite = new Image
+            {
+                Width = 50,
+                Height = 50,
+                Source = new BitmapImage(new Uri("assets/EnemyIdle.png",UriKind.Relative))
+            };
+
+            // Texts
+            MaxText = new Image
+            {
+                Width = 150,
+                Height = 50,
+                Source = new BitmapImage(new Uri("assets/Max.png",UriKind.Relative))
+            };
+
             playersprite = new Image
             {
                 Width = 50,
@@ -129,7 +148,8 @@ public class Game:Window
             };
             player = new Player(
                 playersprite, // sprite
-                100, //hp
+                275, //hp
+                5, // defence
                 shirinaOkna/2-200, //spawnX
                 vusotaOkna/2, //spawnY
                 5, // speedfromstart
@@ -138,8 +158,17 @@ public class Game:Window
                 15, // sprintspeed
                 4 // ishowspeed said it is "BUTTON COUNT *HAW HAW"
             );
-            Playerbtl = new PlayerBtl(50,vusotaOkna/2,500,500);
-            Enemy1 = new Enemy(EnemySprite,0,250);
+            if (characters == 1)
+            {
+                FirstCharacter = new PlayerBtl(50,vusotaOkna/2-135,300,300);
+            }
+            else if (characters > 1)
+            {
+                FirstCharacter = new PlayerBtl(50,vusotaOkna/2-155,300,300);
+            }
+            Enemy1 = new EnemyBtl(shirinaOkna+200,vusotaOkna/2-135,150,150,100);
+            Canvas.SetLeft(Enemy1.Sprite,Enemy1.X);
+            Canvas.SetLeft(Enemy1.Sprite,Enemy1.Y);
             // GUI buttons / bar
             AttckBtnSprite = new Image
             {
@@ -208,11 +237,11 @@ public class Game:Window
             Timer Exiting = new Timer(5);
 
             gcanvas.Children.Add(player.Sprite);
-            gcanvas.Children.Add(Playerbtl.Sprite);
+            gcanvas.Children.Add(FirstCharacter.Sprite);
             Canvas.SetLeft(player.Sprite, player.X);
             Canvas.SetTop(player.Sprite, player.Y);
-            Canvas.SetLeft(Playerbtl.Sprite, Playerbtl.X);
-            Canvas.SetTop(Playerbtl.Sprite,Playerbtl.Y);
+            Canvas.SetLeft(FirstCharacter.Sprite, FirstCharacter.X);
+            Canvas.SetTop(FirstCharacter.Sprite,FirstCharacter.Y);
 
             gcanvas.Children.Add(AttackBtn.Sprite);
             Canvas.SetLeft(AttackBtn.Sprite, AttackBtn.X);
@@ -247,7 +276,6 @@ public class Game:Window
             buttons.Add(ActBtn.IsActive);
             buttons.Add(SpareBtn.IsActive);
             buttons.Add(BlockBtn.IsActive);
-
             while (1 == 1)
             {
                 shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
@@ -256,62 +284,112 @@ public class Game:Window
                 
                 Canvas.SetLeft(player.Sprite,player.X);
                 Canvas.SetTop(player.Sprite,player.Y);
-                // Canvas.SetLeft(Playerbtl.Sprite, Playerbtl.X);
-                // Canvas.SetTop(Playerbtl.Sprite,Playerbtl.Y);
+                // Canvas.SetLeft(FirstCharacter.Sprite, FirstCharacter.X);
+                // Canvas.SetTop(FirstCharacter.Sprite,FirstCharacter.Y);
 
                 PlayerHp.Text = ""+player.hp+"/"+player.maxhp;
+                if (Enemy1.hp <= 0)
+                {
+                    
+                }
+                if (player.hp <= 0)
+                {
+                    if (characters > 2)
+                    {
+                        FirstCharacter.Downed = true;
+                    }
+                    else if (characters == 1)
+                    {
+                        if (FirstCharacter.DeadAnimTime%10 == 0)
+                        {
+                            if (FirstCharacter.DeadAnimFrame < FirstCharacter.Animation2Bitmaps.Count-1)
+                            {
+                                FirstCharacter.DeadAnimFrame = FirstCharacter.DeadAnimFrame+1;
+                                FirstCharacter.Sprite.Source = FirstCharacter.DeadAnimBitmaps[FirstCharacter.DeadAnimFrame];
+                            }
+                            else
+                            {
+                                FirstCharacter.Sprite.Source = FirstCharacter.DefaultSprite;
+                                FirstCharacter.DeadAnimFrame = 0;
+                                FirstCharacter.DeadAnimTime = 0;
+                                Console.WriteLine("Died");
+                                BattleFlag = false;
+                                player.hp = 275;
+                                if(wave == 2){MoveMeteorsOutOfBounds(meteors);}
+                                else{CC.Disapear();}
+                            }
+                            
+                        }
+                        FirstCharacter.DeadAnimTime = FirstCharacter.DeadAnimTime+1;
+                    }
+                }
                 if (HealFlag == true)
                 {
                     // Anim
-                    Playerbtl.Sprite.Source = Playerbtl.Animation2Bitmaps[Playerbtl.Animation2Frame];
-                    Console.WriteLine("Heal anim styart");
-                    if (Playerbtl.Animation2Time%10 == 0)
+                    FirstCharacter.Sprite.Source = FirstCharacter.Animation2Bitmaps[FirstCharacter.Animation2Frame];
+                    if (FirstCharacter.Animation2Time%10 == 0)
                     {
-                        if (Playerbtl.Animation2Frame < Playerbtl.Animation2Bitmaps.Count-1)
+                        if (FirstCharacter.Animation2Frame < FirstCharacter.Animation2Bitmaps.Count-1)
                         {
-                            Playerbtl.Animation2Frame = Playerbtl.Animation2Frame+1;
-                            Playerbtl.Sprite.Source = Playerbtl.Animation2Bitmaps[Playerbtl.Animation2Frame];
+                            FirstCharacter.Animation2Frame = FirstCharacter.Animation2Frame+1;
+                            FirstCharacter.Sprite.Source = FirstCharacter.Animation2Bitmaps[FirstCharacter.Animation2Frame];
                         }
                         else
                         {
-                            Playerbtl.Sprite.Source = Playerbtl.DefaultSprite;
-                            Playerbtl.Animation2Frame = 0;
-                            Playerbtl.Animation2Time = 0;
+                            MaxTextTimer.Activate();
+                            FirstCharacter.Sprite.Source = FirstCharacter.DefaultSprite;
+                            FirstCharacter.Animation2Frame = 0;
+                            FirstCharacter.Animation2Time = 0;
                             // Action
-                            player.hp = player.hp + 10;
+                            if (player.hp+10 >= player.maxhp)
+                            {
+                                player.hp = player.maxhp;
+                                Canvas.SetLeft(MaxText,vusotaOkna/2-135);
+                                Canvas.SetTop(MaxText,50);
+                                if (MaxTextTimer.DoAction == true)
+                                {
+                                    Canvas.SetLeft(MaxText,99999999);
+                                    Canvas.SetTop(MaxText,9999999999);
+                                }
+                                MaxTextTimer.AddTime();
+                            }
+                            else
+                            {
+                                player.hp = player.hp + 10;
+                            }
                             // End
                             HealFlag = false;
                             BattleFlag = true;
                         }
                     }
-                    Playerbtl.Animation2Time = Playerbtl.Animation2Time+1;
+                    FirstCharacter.Animation2Time = FirstCharacter.Animation2Time+1;
                 }
                 if (HitAnimFlag == true)
                 {
                     // Anim
-                    Playerbtl.Sprite.Source = Playerbtl.HirtAnimBitmaps[Playerbtl.HirtAnimFrame];
+                    FirstCharacter.Sprite.Source = FirstCharacter.HirtAnimBitmaps[FirstCharacter.HirtAnimFrame];
                     Console.WriteLine("Anim hurt start");
-                    if (Playerbtl.HirtAnimTime%10 == 0)
+                    if (FirstCharacter.HirtAnimTime%10 == 0)
                     {
-                        Console.WriteLine("Frame = "+Playerbtl.HirtAnimFrame);
-                        if (Playerbtl.HirtAnimFrame < Playerbtl.HirtAnimBitmaps.Count-1)
+                        Console.WriteLine("Frame = "+FirstCharacter.HirtAnimFrame);
+                        if (FirstCharacter.HirtAnimFrame < FirstCharacter.HirtAnimBitmaps.Count-1)
                         {
-                            Playerbtl.HirtAnimFrame = Playerbtl.HirtAnimFrame+1;
-                            Playerbtl.Sprite.Source = Playerbtl.HirtAnimBitmaps[Playerbtl.HirtAnimFrame];
+                            FirstCharacter.HirtAnimFrame = FirstCharacter.HirtAnimFrame+1;
+                            FirstCharacter.Sprite.Source = FirstCharacter.HirtAnimBitmaps[FirstCharacter.HirtAnimFrame];
                         }
                         else
                         {
                             Console.WriteLine("Write LINE");
-                            Playerbtl.Sprite.Source = Playerbtl.DefaultSprite;
-                            Playerbtl.HirtAnimFrame = 0;
-                            Playerbtl.HirtAnimTime = 0;
+                            FirstCharacter.Sprite.Source = FirstCharacter.DefaultSprite;
+                            FirstCharacter.HirtAnimFrame = 0;
+                            FirstCharacter.HirtAnimTime = 0;
                             // Action
                             
                             // End
                             HitAnimFlag = false;
                         }
                     }
-                    Playerbtl.HirtAnimTime = Playerbtl.HirtAnimTime+1;
+                    FirstCharacter.HirtAnimTime = FirstCharacter.HirtAnimTime+1;
                 }
                 if (BattleFlag == true && wave == 1)
                 {
@@ -320,9 +398,10 @@ public class Game:Window
                     {
                         foreach (Attack meteor in meteors)
                         {
-                            if (CollisionsS.has_objects_collision(meteor,player) == true && attackSettings.attackTime%40 == 0)
+                            if (CollisionsS.has_objects_collision(meteor,player) == true && attackSettings.attackTime%10 == 0)
                             {
-                                player.hp = player.hp - 1;
+                                double meteordamage = 10;
+                                player.hp = player.hp - (meteordamage-player.def);
                                 HitAnimFlag = true;
                             }
                             meteor.Undertale();
@@ -373,7 +452,8 @@ public class Game:Window
                             {
                                 if (CollisionsS.has_objects_collision(CC,player) == true && attackSettings.attackTime%40 == 0)
                                 {
-                                    player.hp = player.hp - 2;
+                                    double ccdamage = 10;
+                                    player.hp = player.hp - (ccdamage-player.def);
                                     HitAnimFlag = true;
                                 }
                                 if (attackSettings.attackTime%250 == 0)
@@ -585,7 +665,7 @@ public class Game:Window
                     if (buttonselected == 0)
                     {
                         Enemy1.hp = Enemy1.hp - 20;
-                        // Playerbtl.Source = new BitmapImage(
+                        // FirstCharacter.Source = new BitmapImage(
                         // new Uri("assets/playerbtlhitattack.png", UriKind.Relative));
                         BattleFlag = true;
                         // PlayerBTL.Source = new BitmapImage(new Uri("assets/playerbtlidle.png", UriKind.Relative));

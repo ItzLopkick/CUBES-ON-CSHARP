@@ -49,3 +49,7 @@ C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Buttons\Actbtn
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Buttons\Attackbtn\AttackBtn1.png
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Buttons\Attackbtn\AttackBtn2.png
 C:\Programing\Csharp\GraphicTest\obj\Debug\net10.0-windows\GraphicTest.g.resources
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Max.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EnemyIdle.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\sounds\FM.mp3
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\playerdowned.png

@@ -37,11 +37,26 @@ class PlayerBtl
         new BitmapImage(new Uri("assets/HitAnim/LopkickHirt3.png",UriKind.Relative)),
         new BitmapImage(new Uri("assets/HitAnim/LopkickHirt4.png",UriKind.Relative)),
     };
+    public List<BitmapImage> DeadAnimBitmaps = new List<BitmapImage>
+    {
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative)),
+        new BitmapImage(new Uri("assets/playerdowned.png",UriKind.Relative))
+    };
     public BitmapImage DefaultSprite = new BitmapImage(new Uri("assets/playerbtlidle.png",UriKind.Relative));
     public double Animation2Time;
     public int Animation2Frame;
     public double HirtAnimTime;
     public int HirtAnimFrame;
+    public double DeadAnimTime;
+    public int DeadAnimFrame;
+    public bool Downed;
 
     public PlayerBtl(double X, double Y,double Width,double Height)
     {
@@ -61,5 +76,8 @@ class PlayerBtl
         this.Animation2Frame = 0;
         this.HirtAnimTime = 0;
         this.HirtAnimFrame = 0;
+        this.DeadAnimTime = 0;
+        this.DeadAnimFrame = 0;
+        this.Downed = false;
     }
 }

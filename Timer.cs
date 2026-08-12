@@ -26,20 +26,20 @@ class Timer
         this.IsTimerActive = false;
         this.DoAction = false;
     }
-    public void Activate(bool IsTimerActive)
+    public void Activate()
     {
         IsTimerActive = true;
     }
-    public void AddTime(double Time,double TimeMax,bool IsTimerActive,bool DoAction)
+    public void AddTime()
     {
-        if (IsTimerActive == true)
+        if (this.IsTimerActive == true)
         {
-            Time = Time + 1000;
+            this.Time = this.Time + 1000;
         }
-        else if (Time == TimeMax)
+        else if (this.Time >= this.TimeMax)
         {
-            Time = 0;
-            IsTimerActive = false;
+            this.Time = 0;
+            this.IsTimerActive = false;
             DoAction = true;
         }
     }
