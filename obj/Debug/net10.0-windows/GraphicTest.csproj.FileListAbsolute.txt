@@ -53,3 +53,8 @@ C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Max.png
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\EnemyIdle.png
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\sounds\FM.mp3
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\playerdowned.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\FreeMode\IdleDown.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\FreeMode\IdleLeft.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\FreeMode\IdleRight.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\FreeMode\IdleUp.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Room1.png
