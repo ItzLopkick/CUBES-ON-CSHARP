@@ -32,7 +32,15 @@ public class Game:Window
 
     double characters = 1;
     double wave = 0;
-    bool Freemode = false;
+
+
+
+    bool Freemode = true;
+    bool BattleMode = false;
+
+
+
+
     bool BattleFlag = false;
     bool Attack1Flag = false;
     bool AttackFlag2 = false;
@@ -103,16 +111,16 @@ public class Game:Window
         {
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
-            // await FreeMode(gcanvas);
-            await StartBattle(gcanvas);
+            await FreeMode(gcanvas);
+            // await StartBattle(gcanvas);
         };
         
     }
     void HandlingBattleButtons()
     {
-        if (Freemode == false)
+        if (BattleMode == true)
         {
-                // число увиличивается и проверяет если нажата вправо-left (если число следуеше 2 3 4 1)
+            // число увиличивается и проверяет если нажата вправо-left (если число следуеше 2 3 4 1)
             if (buttonselected == 0)
             {
                 AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn2.png",UriKind.Relative));
@@ -150,7 +158,7 @@ public class Game:Window
     }
     void HandlingKeysUp(object Sender,KeyEventArgs event2)
     {
-        if (BattleFlag == true)
+        if (BattleFlag == true && BattleMode == true || Freemode == true)
         {
             if (event2.Key == Key.Right)
             {
@@ -172,10 +180,6 @@ public class Game:Window
             {
                 player.ShiftFlag = false;
             }
-            if (event2.Key == Key.C)
-            {
-                
-            }
         }
         if (event2.Key == Key.Escape)
         {
@@ -185,7 +189,7 @@ public class Game:Window
     }
     void HandlingKeysDown(object Sender,KeyEventArgs event2)
     {
-        if (BattleFlag == true)
+        if (BattleFlag == true && BattleMode == true || Freemode == true)
         {
             if (event2.Key == Key.Right)
             {
@@ -208,7 +212,7 @@ public class Game:Window
                 player.ShiftFlag = true;
             }
         }
-        else if (BattleFlag == false)
+        else if (BattleFlag == false && BattleMode == true)
         {
             player.MoveLeftFlag = false;
             player.MoveRightFlag = false;
@@ -295,21 +299,21 @@ public class Game:Window
         }
     }
     
-    async Task FreeMode(Canvas gcanvas)
+    async Task<bool> FreeMode(Canvas gcanvas)
     {
-        Freemode = true;
+        int integerl = 0;
         Room1 = new Image
         {
             Width = 1980,
-            Height = 1000,
+            Height = 1080,
             Source = new BitmapImage(new Uri("assets/Room1.png",UriKind.Relative))
         };
         player = new Player(
             new Image
             {
-                Width = 50,
-                Height = 50,
-                Source = new BitmapImage(new Uri("assets/playerbtlidle.png",UriKind.Relative))
+                Width = 350,
+                Height = 350,
+                Source = new BitmapImage(new Uri("assets/FreeMode/IdleUp.png",UriKind.Relative))
             }, // sprite
             275, //hp
             5, // defence
@@ -321,17 +325,26 @@ public class Game:Window
             15, // sprintspeed
             4 // ishowspeed said it is "BUTTON COUNT *HAW HAW"
         );
-        gcanvas.Children.Add(player.Sprite);
         gcanvas.Children.Add(Room1);
+        gcanvas.Children.Add(player.Sprite);
 
         Canvas.SetLeft(Room1,0);
         Canvas.SetTop(Room1,0);
         while (true)
         {
+            shirinaOkna = this.ActualWidth-15;
+            vusotaOkna = this.ActualHeight-38;
+            player.Controls(0,0,shirinaOkna,vusotaOkna); 
             
             Canvas.SetLeft(player.Sprite,player.X);
             Canvas.SetTop(player.Sprite,player.Y);
 
+            integerl = integerl + 1;
+            if (integerl == 100)
+            {
+                Console.WriteLine("End");
+                return true;
+            }
             await Task.Delay(10);
         }
     }
