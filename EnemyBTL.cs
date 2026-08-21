@@ -18,10 +18,6 @@ class EnemyBtl
     public double Width;
     public double Height;
     public BitmapImage DefaultSprite = new BitmapImage(new Uri("assets/EnemyIdle.png",UriKind.Relative));
-    public double Animation2Time;
-    public int Animation2Frame;
-    public double HirtAnimTime;
-    public int HirtAnimFrame;
 
     public EnemyBtl(double X, double Y,double Width,double Height,double hp)
     {

@@ -58,3 +58,4 @@ C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\FreeMode\IdleL
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\FreeMode\IdleRight.png
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\FreeMode\IdleUp.png
 C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\Room1.png
+C:\Programing\Csharp\GraphicTest\bin\Debug\net10.0-windows\assets\sounds\weopenpull.mp3

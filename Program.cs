@@ -73,6 +73,7 @@ public class Game:Window
     Attack2 CC;
     AttackSettings attackSettings;
     Arena arena;
+    InputSystem inputSystem = new InputSystem();
     // Sounds
     Sound RMusic = new Sound();
     Sound RSound = new Sound();
@@ -102,8 +103,8 @@ public class Game:Window
         Icon = new BitmapImage(new Uri("assets/app.ico",UriKind.Relative));
         Background = Brushes.Black;
         // Короче это привазка функции к клавиатуре и создаём Loaded
-        this.KeyDown += HandlingKeysDown;
-        this.KeyUp += HandlingKeysUp;
+        this.KeyDown += inputSystem.HandlingKeysDown;
+        this.KeyUp += inputSystem.HandlingKeysUp;
         this.Focusable = true;
         this.Focus();
         Loaded += async (_,__) => // :0
@@ -112,7 +113,6 @@ public class Game:Window
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
             vusotaOkna = this.ActualHeight-38; // круто
             await FreeMode(gcanvas);
-            // await StartBattle(gcanvas);
         };
         
     }
@@ -156,121 +156,121 @@ public class Game:Window
         }
         
     }
-    void HandlingKeysUp(object Sender,KeyEventArgs event2)
-    {
-        if (BattleFlag == true && BattleMode == true || Freemode == true)
-        {
-            if (event2.Key == Key.Right)
-            {
-                player.MoveRightFlag = false;
-            }
-            if (event2.Key == Key.Up)
-            {
-                player.MoveUpFlag = false;
-            }
-            if (event2.Key == Key.Left)
-            {
-                player.MoveLeftFlag = false;
-            }
-            if (event2.Key == Key.Down)
-            {
-                player.MoveDownFlag = false;
-            }
-            if (event2.Key == Key.LeftShift)
-            {
-                player.ShiftFlag = false;
-            }
-        }
-        if (event2.Key == Key.Escape)
-        {
+    // void HandlingKeysUp(object Sender,KeyEventArgs event2)
+    // {
+    //     if (BattleFlag == true && BattleMode == true || Freemode == true)
+    //     {
+    //         if (event2.Key == Key.Right)
+    //         {
+    //             player.MoveRightFlag = false;
+    //         }
+    //         if (event2.Key == Key.Up)
+    //         {
+    //             player.MoveUpFlag = false;
+    //         }
+    //         if (event2.Key == Key.Left)
+    //         {
+    //             player.MoveLeftFlag = false;
+    //         }
+    //         if (event2.Key == Key.Down)
+    //         {
+    //             player.MoveDownFlag = false;
+    //         }
+    //         if (event2.Key == Key.LeftShift)
+    //         {
+    //             player.ShiftFlag = false;
+    //         }
+    //     }
+    //     if (event2.Key == Key.Escape)
+    //     {
             
-        }
-        event2.Handled = true;
-    }
-    void HandlingKeysDown(object Sender,KeyEventArgs event2)
-    {
-        if (BattleFlag == true && BattleMode == true || Freemode == true)
-        {
-            if (event2.Key == Key.Right)
-            {
-                player.MoveRightFlag = true;
-            }
-            if (event2.Key == Key.Up)
-            {
-                player.MoveUpFlag = true;
-            }
-            if (event2.Key == Key.Down)
-            {
-                player.MoveDownFlag = true;
-            }
-            if (event2.Key == Key.Left)
-            {
-                player.MoveLeftFlag = true;
-            }
-            if (event2.Key == Key.LeftShift)
-            {
-                player.ShiftFlag = true;
-            }
-        }
-        else if (BattleFlag == false && BattleMode == true)
-        {
-            player.MoveLeftFlag = false;
-            player.MoveRightFlag = false;
-            player.MoveUpFlag = false;
-            player.MoveDownFlag = false;
-            if (event2.Key == Key.Right)
-                {
-                    if (buttonselected > 3)
-                    {
-                        buttonselected = 0;
-                        HandlingBattleButtons();
-                    }
-                    else
-                    {
-                        buttonselected = buttonselected+1;
-                        HandlingBattleButtons();
-                    }
-                }
-                if (event2.Key == Key.Left)
-                {
-                    if (buttonselected < 0)
-                    {
-                        buttonselected = 3;
-                        HandlingBattleButtons();
-                    }
-                    else
-                    {
-                        buttonselected = buttonselected-1;
-                        HandlingBattleButtons();
-                    }
-                }
-                if (event2.Key == Key.Enter && BattleFlag == false)
-                {
-                    if (buttonselected == 0)
-                    {
-                        Enemy1.hp = Enemy1.hp - 20;
-                        BattleFlag = true;
-                    }
-                    if (buttonselected == 1)
-                    {
-                        HealFlag = true;
-                    }
-                    if (buttonselected == 2)
-                    {
-                        BattleFlag = true;
-                    }
-                    if (buttonselected == 3)
-                    {
-                        BattleFlag = true;
-                    }
-                }
-        }
-        if (event2.Key == Key.Escape)
-        {
+    //     }
+    //     event2.Handled = true;
+    // }
+    // void HandlingKeysDown(object Sender,KeyEventArgs event2)
+    // {
+    //     if (BattleFlag == true && BattleMode == true || Freemode == true)
+    //     {
+    //         if (event2.Key == Key.Right)
+    //         {
+    //             player.MoveRightFlag = true;
+    //         }
+    //         if (event2.Key == Key.Up)
+    //         {
+    //             player.MoveUpFlag = true;
+    //         }
+    //         if (event2.Key == Key.Down)
+    //         {
+    //             player.MoveDownFlag = true;
+    //         }
+    //         if (event2.Key == Key.Left)
+    //         {
+    //             player.MoveLeftFlag = true;
+    //         }
+    //         if (event2.Key == Key.LeftShift)
+    //         {
+    //             player.ShiftFlag = true;
+    //         }
+    //     }
+    //     else if (BattleFlag == false && BattleMode == true)
+    //     {
+    //         player.MoveLeftFlag = false;
+    //         player.MoveRightFlag = false;
+    //         player.MoveUpFlag = false;
+    //         player.MoveDownFlag = false;
+    //         if (event2.Key == Key.Right)
+    //             {
+    //                 if (buttonselected > 3)
+    //                 {
+    //                     buttonselected = 0;
+    //                     HandlingBattleButtons();
+    //                 }
+    //                 else
+    //                 {
+    //                     buttonselected = buttonselected+1;
+    //                     HandlingBattleButtons();
+    //                 }
+    //             }
+    //             if (event2.Key == Key.Left)
+    //             {
+    //                 if (buttonselected < 0)
+    //                 {
+    //                     buttonselected = 3;
+    //                     HandlingBattleButtons();
+    //                 }
+    //                 else
+    //                 {
+    //                     buttonselected = buttonselected-1;
+    //                     HandlingBattleButtons();
+    //                 }
+    //             }
+    //             if (event2.Key == Key.Enter && BattleFlag == false)
+    //             {
+    //                 if (buttonselected == 0)
+    //                 {
+    //                     Enemy1.hp = Enemy1.hp - 20;
+    //                     BattleFlag = true;
+    //                 }
+    //                 if (buttonselected == 1)
+    //                 {
+    //                     HealFlag = true;
+    //                 }
+    //                 if (buttonselected == 2)
+    //                 {
+    //                     BattleFlag = true;
+    //                 }
+    //                 if (buttonselected == 3)
+    //                 {
+    //                     BattleFlag = true;
+    //                 }
+    //             }
+    //     }
+    //     if (event2.Key == Key.Escape)
+    //     {
             
-        }
-        event2.Handled = true;
-    }
+    //     }
+    //     event2.Handled = true;
+    // }
     
     void CreateMeteors(double value)
     {
@@ -301,6 +301,8 @@ public class Game:Window
     
     async Task<bool> FreeMode(Canvas gcanvas)
     {
+        Freemode = true;
+        BattleMode = false;
         int integerl = 0;
         Room1 = new Image
         {
@@ -313,7 +315,7 @@ public class Game:Window
             {
                 Width = 350,
                 Height = 350,
-                Source = new BitmapImage(new Uri("assets/FreeMode/IdleUp.png",UriKind.Relative))
+                Source = new BitmapImage(new Uri("assets/FreeMode/IdleDown.png",UriKind.Relative))
             }, // sprite
             275, //hp
             5, // defence
@@ -334,6 +336,10 @@ public class Game:Window
         {
             shirinaOkna = this.ActualWidth-15;
             vusotaOkna = this.ActualHeight-38;
+            foreach (Key kbb in inputSystem.keyboardbuttons)
+            {
+                Console.WriteLine(kbb);
+            }
             player.Controls(0,0,shirinaOkna,vusotaOkna); 
             
             Canvas.SetLeft(player.Sprite,player.X);
@@ -346,12 +352,14 @@ public class Game:Window
                 return true;
             }
             await Task.Delay(10);
+            Console.WriteLine("-----------------");
         }
     }
     async Task<bool> StartBattle(Canvas gcanvas)
     {
+        Freemode = false;
+        BattleMode = true;
         wave = 2;
-        RMusic.PlayLoop("assets/sounds/FM.mp3");
         // Arena!!!
         ArenaSprite = new Image // НАЧАЛО БАТЛА!!!!
         {
@@ -518,6 +526,10 @@ public class Game:Window
         buttons.Add(ActBtn.IsActive);
         buttons.Add(SpareBtn.IsActive);
         buttons.Add(BlockBtn.IsActive);
+
+        RSound.PlaySound("assets/sounds/weopenpull.mp3",1F);
+        RMusic.PlayLoop("assets/sounds/FM.mp3",0.75F);
+
         while (1 == 1)
         {
             shirinaOkna = this.ActualWidth-15; // вычесление реальных размеров окна
@@ -673,7 +685,7 @@ public class Game:Window
                 
                 }
                 if (BattleFlag == true && wave == 2)
-                {   // Я дядя редит ):
+                {
                     if (attackSettings.attackTime == 0)
                     {
                         CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
@@ -684,7 +696,7 @@ public class Game:Window
                     {
                         if (CC.Agresive == false)
                         {
-                            if (attackSettings.attackTime%130 == 0)
+                            if (attackSettings.attackTime%20 == 0)
                             {
                                 CC.Agresive = true;
                                 CC.Sprite.Fill = Brushes.Red;
@@ -692,13 +704,13 @@ public class Game:Window
                         }
                         if (CC.Agresive == true)
                         {
-                            if (CollisionsS.has_objects_collision(CC,player) == true && attackSettings.attackTime%40 == 0)
+                            if (CollisionsS.has_objects_collision(CC,player) == true && attackSettings.attackTime%20 == 0)
                             {
                                 double ccdamage = 10;
                                 player.hp = player.hp - (ccdamage-player.def);
                                 HitAnimFlag = true;
                             }
-                            if (attackSettings.attackTime%250 == 0)
+                            if (attackSettings.attackTime%60 == 0)
                                 {
                                     CC.Sprite.Fill = Brushes.White;
                                     CC.Disapear();
@@ -709,7 +721,7 @@ public class Game:Window
                     }
                     if (CC.IsApear == false)
                     {
-                        if (attackSettings.attackTime%270 == 0)
+                        if (attackSettings.attackTime%70 == 0)
                             {
                                 CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
                                 Canvas.SetLeft(CC.Sprite,CC.X);
