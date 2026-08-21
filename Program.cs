@@ -73,7 +73,8 @@ public class Game:Window
     Attack2 CC;
     AttackSettings attackSettings;
     Arena arena;
-    InputSystem inputSystem = new InputSystem();
+    // InputSystem inputSystem = new InputSystem();
+
     // Sounds
     Sound RMusic = new Sound();
     Sound RSound = new Sound();
@@ -103,8 +104,8 @@ public class Game:Window
         Icon = new BitmapImage(new Uri("assets/app.ico",UriKind.Relative));
         Background = Brushes.Black;
         // Короче это привазка функции к клавиатуре и создаём Loaded
-        this.KeyDown += inputSystem.HandlingKeysDown;
-        this.KeyUp += inputSystem.HandlingKeysUp;
+        this.KeyDown += InputSystem.HandlingKeysDown;
+        this.KeyUp += InputSystem.HandlingKeysUp;
         this.Focusable = true;
         this.Focus();
         Loaded += async (_,__) => // :0
@@ -336,7 +337,7 @@ public class Game:Window
         {
             shirinaOkna = this.ActualWidth-15;
             vusotaOkna = this.ActualHeight-38;
-            foreach (Key kbb in inputSystem.keyboardbuttons)
+            foreach (Key kbb in InputSystem.keyboardbuttons)
             {
                 Console.WriteLine(kbb);
             }

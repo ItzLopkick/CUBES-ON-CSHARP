@@ -14,14 +14,14 @@ using NAudio;
 using NAudio.Wave;
 using System.Windows.Documents;
 
-class InputSystem
+static class InputSystem
 {
-    public List<Key> keyboardbuttons = new List<Key> {};
+    public static List<Key> keyboardbuttons = new List<Key> {};
     // public InputSystem()
     // {
     //     this.keyboardbuttons = keyboardbuttons;
     // }
-    public void HandlingKeysDown(object Sender,KeyEventArgs event2)
+    public static void HandlingKeysDown(object Sender,KeyEventArgs event2)
     {
         if (!keyboardbuttons.Contains(event2.Key))
         {
@@ -29,7 +29,7 @@ class InputSystem
         }
         event2.Handled = true;
     }
-    public void HandlingKeysUp(object Sender,KeyEventArgs event2)
+    public static void HandlingKeysUp(object Sender,KeyEventArgs event2)
     {
         keyboardbuttons.Remove(event2.Key);
         event2.Handled = true;
