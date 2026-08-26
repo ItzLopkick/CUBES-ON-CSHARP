@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xdVsNUBhhCY=",
+  "dgSpecHash": "QmB7pG7Aelo=",
   "success": true,
   "projectFilePath": "C:\\Programing\\Csharp\\GraphicTest\\GraphicTest.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,8 @@
     "C:\\Users\\stepa\\.nuget\\packages\\naudio.midi\\2.3.0\\naudio.midi.2.3.0.nupkg.sha512",
     "C:\\Users\\stepa\\.nuget\\packages\\naudio.wasapi\\2.3.0\\naudio.wasapi.2.3.0.nupkg.sha512",
     "C:\\Users\\stepa\\.nuget\\packages\\naudio.winforms\\2.3.0\\naudio.winforms.2.3.0.nupkg.sha512",
-    "C:\\Users\\stepa\\.nuget\\packages\\naudio.winmm\\2.3.0\\naudio.winmm.2.3.0.nupkg.sha512"
+    "C:\\Users\\stepa\\.nuget\\packages\\naudio.winmm\\2.3.0\\naudio.winmm.2.3.0.nupkg.sha512",
+    "C:\\Users\\stepa\\.nuget\\packages\\tiledsharp\\1.0.1\\tiledsharp.1.0.1.nupkg.sha512"
   ],
   "logs": []
 }

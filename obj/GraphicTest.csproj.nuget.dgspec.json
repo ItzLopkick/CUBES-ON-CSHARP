@@ -47,6 +47,10 @@
             "NAudio": {
               "target": "Package",
               "version": "[2.3.0, )"
+            },
+            "TiledSharp": {
+              "target": "Package",
+              "version": "[1.0.1, )"
             }
           },
           "imports": [

@@ -15,6 +15,7 @@
   </ItemGroup> -->
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.3.0" />
+    <PackageReference Include="TiledSharp" Version="1.0.1" />
   </ItemGroup>
     <ItemGroup>
     <Content Include="assets\**">
@@ -25,5 +26,13 @@
   <Resource Include="Fonts\dhp.ttf">
     </Resource>
   </ItemGroup>
+  <ItemGroup>
+  <None Update="*.tmx">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+  <None Update="*.png">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
 
 </Project>

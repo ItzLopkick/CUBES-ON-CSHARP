@@ -1,0 +1,37 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "C:/Programing/Users/stepa/AppData/Roaming/kristal/mods/The Deltarune/love-11.5-win64/The_Deltarune/mods/The_Deltarune/scripts/world/tilesets/castle.tsx": {
+            "dynamicWrapping": true
+        },
+        "C:/Users/stepa/AppData/Roaming/kristal/mods/The Deltarune/love-11.5-win64/The_Deltarune/mods/The_Deltarune/scripts/world/tilesets/castle.tsx": {
+            "dynamicWrapping": false
+        },
+        "Room1.tmx": {
+            "scale": 0.4700520833333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 479.7340720221607,
+                "y": 622.2714681440444
+            }
+        },
+        "Rooms/Room1.tmx": {
+            "scale": 0.4700520833333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 479.7340720221607,
+                "y": 320.17728531855954
+            }
+        }
+    },
+    "last.externalTilesetPath": "C:/Users/stepa/AppData/Roaming/kristal/mods/The Deltarune/love-11.5-win64/The_Deltarune/mods/The_Deltarune/scripts/world/tilesets",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+    ],
+    "project": "gamerooms.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)"
+}
