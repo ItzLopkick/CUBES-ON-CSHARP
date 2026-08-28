@@ -58,7 +58,7 @@ class BattleMode
 
     public async Task<bool> StartBattle(Canvas gcanvas, Sound RMusic, Sound RSound, double windowWidth, double windowHeight)
     {
-        wave = 2;
+        wave = 1;
         // Arena!!!
         ArenaSprite = new Image // НАЧАЛО БАТЛА!!!!
         {
@@ -231,6 +231,8 @@ class BattleMode
 
         while (1 == 1)
         {
+            ProcesingKeysDown();
+            ProcesingKeysUp();
             InputSystem.KeyLog();
             player.Controls(arena.physX,arena.physY,arena.physWidth,arena.physHeight); 
             
@@ -450,8 +452,8 @@ class BattleMode
 
 
             // tick
-            await Task.Delay(10);
-        } // Конец Батла
+            await Task.Delay(32);
+        }
     }
     void CreateMeteors(double value)
     {
@@ -477,6 +479,114 @@ class BattleMode
         {
             meteor.Y = meteor.Y +9999;
             Canvas.SetTop(meteor.Sprite,meteor.Y);
+        }
+    }
+    void ProcesingKeysUp()
+    {
+        if (!InputSystem.keyboardbuttons.Contains(Key.Right))
+        {
+            player.MoveRightFlag = false;
+        }
+        if (!InputSystem.keyboardbuttons.Contains(Key.Up))
+        {
+            player.MoveUpFlag = false;
+        }
+        if (!InputSystem.keyboardbuttons.Contains(Key.Left))
+        {
+            player.MoveLeftFlag = false;
+        }
+        if (!InputSystem.keyboardbuttons.Contains(Key.Down))
+        {
+            player.MoveDownFlag = false;
+        }
+        if (!InputSystem.keyboardbuttons.Contains(Key.LeftShift))
+        {
+            player.ShiftFlag = false;
+        }
+        if (!InputSystem.keyboardbuttons.Contains(Key.Escape))
+        {
+            
+        }
+    }
+    void ProcesingKeysDown()
+    {
+        if (InputSystem.keyboardbuttons.Contains(Key.Right))
+        {
+            player.MoveRightFlag = true;
+        }
+        if (InputSystem.keyboardbuttons.Contains(Key.Up))
+        {
+            player.MoveUpFlag = true;
+        }
+        if (InputSystem.keyboardbuttons.Contains(Key.Down))
+        {
+            player.MoveDownFlag = true;
+        }
+        if (InputSystem.keyboardbuttons.Contains(Key.Left))
+        {
+            player.MoveLeftFlag = true;
+        }
+        if (InputSystem.keyboardbuttons.Contains(Key.LeftShift))
+        {
+            player.ShiftFlag = true;
+        }
+        
+        else if (BattleFlag == false)
+        {
+            player.MoveLeftFlag = false;
+            player.MoveRightFlag = false;
+            player.MoveUpFlag = false;
+            player.MoveDownFlag = false;
+            if (InputSystem.keyboardbuttons.Contains(Key.Right))
+            {
+                if (buttonselected > 3)
+                {
+                    buttonselected = 0;
+                    HandlingBattleButtons();
+                }
+                else
+                {
+                    buttonselected = buttonselected+1;
+                    HandlingBattleButtons();
+                }
+            }
+            if (InputSystem.keyboardbuttons.Contains(Key.Left))
+            {
+                if (buttonselected < 0)
+                {
+                    buttonselected = 3;
+                    HandlingBattleButtons();
+                }
+                else
+                {
+                    buttonselected = buttonselected-1;
+                    HandlingBattleButtons();
+                }
+            }
+            if (InputSystem.keyboardbuttons.Contains(Key.Enter) && BattleFlag == false)
+            {
+                if (buttonselected == 0)
+                {
+                    Enemy1.hp = Enemy1.hp - 20;
+                    BattleFlag = true;
+                }
+                if (buttonselected == 1)
+                {
+                    HealFlag = true;
+                }
+                if (buttonselected == 2)
+                {
+                    BattleFlag = true;
+                }
+                if (buttonselected == 3)
+                {
+                    BattleFlag = true;
+                }
+            }
+        }
+        if (InputSystem.keyboardbuttons.Contains(Key.Escape))
+        {
+            
         }
     }
     void HandlingBattleButtons()
