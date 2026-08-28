@@ -13,9 +13,12 @@ using System.Media;
 using NAudio;
 using NAudio.Wave;
 using System.Windows.Documents;
+using System.Numerics;
 
 class BattleMode
 {
+    BigInteger buttonswipestamp = 0; 
+    BigInteger tick = 0;
     double windowWidth;
     double windowHeight;
     double characterscount = 2;
@@ -452,7 +455,8 @@ class BattleMode
 
 
             // tick
-            await Task.Delay(32);
+            tick = tick + 1;
+            await Task.Delay(16);
         }
     }
     void CreateMeteors(double value)
@@ -591,7 +595,10 @@ class BattleMode
     }
     void HandlingBattleButtons()
     {
-        // число увиличивается и проверяет если нажата вправо-left (если число следуеше 2 3 4 1)
+        if (!(tick-buttonswipestamp >= 6))
+        {
+            return;
+        }
         if (buttonselected == 0)
         {
             AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn2.png",UriKind.Relative));
@@ -624,6 +631,7 @@ class BattleMode
         {
             BlockBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn1.png",UriKind.Relative));
         }
+        buttonswipestamp = tick;
         
     }
 }
