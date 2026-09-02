@@ -64,6 +64,7 @@ public class Game:Window
                 windowWidth: this.ActualWidth-15,
                 windowHeight: this.ActualHeight-38
             );
+            Console.WriteLine("|Freemode|");
         };
         
     }

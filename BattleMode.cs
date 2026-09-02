@@ -61,7 +61,7 @@ class BattleMode
 
     public async Task<bool> StartBattle(Canvas gcanvas, Sound RMusic, Sound RSound, double windowWidth, double windowHeight)
     {
-        wave = 1;
+        wave = 2;
         // Arena!!!
         ArenaSprite = new Image // НАЧАЛО БАТЛА!!!!
         {
@@ -118,7 +118,7 @@ class BattleMode
         {
             FirstCharacter = new PlayerBtl(50,windowHeight/2-155,300,300);
         }
-        Enemy1 = new EnemyBtl(windowWidth+200,windowHeight/2-135,150,150,5);
+        Enemy1 = new EnemyBtl(windowWidth+200,windowHeight/2-135,150,150,250);
         Canvas.SetLeft(Enemy1.Sprite,Enemy1.X);
         Canvas.SetLeft(Enemy1.Sprite,Enemy1.Y);
         // GUI buttons / bar
@@ -247,6 +247,7 @@ class BattleMode
             PlayerHp.Text = ""+player.hp+"/"+player.maxhp;
             if (Enemy1.hp <= 0)
             {
+                RMusic.Stop();
                 return true;
             }
             if (player.hp <= 0)
@@ -348,8 +349,11 @@ class BattleMode
                 }
                 FirstCharacter.HirtAnimTime = FirstCharacter.HirtAnimTime+1;
             }
-            if (BattleFlag == true && wave == 1)
+            if (BattleFlag == true)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Working :)");
+                Console.ForegroundColor = ConsoleColor.Black;
                 player.Speed = player.SpeedFromStart;
                 if (wave == 1)
                 {
@@ -372,7 +376,7 @@ class BattleMode
 
                             Canvas.SetLeft(meteor.Sprite,meteor.X);
                             Canvas.SetTop(meteor.Sprite,meteor.Y);
-                        } // Я дядя редит |:
+                        }
                     }
                     // :D
                     attackSettings.attackTime = attackSettings.attackTime + 1;
@@ -387,10 +391,14 @@ class BattleMode
                 }
                 
                 }
-                if (BattleFlag == true && wave == 2)
+                if (wave == 2)
                 {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Working :) WAVE 2 "+attackSettings.attackTime);
+                    Console.ForegroundColor = ConsoleColor.Black;
                     if (attackSettings.attackTime == 0)
                     {
+                        Console.WriteLine("Aoo");
                         CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
                         Canvas.SetLeft(CC.Sprite,CC.X);
                         Canvas.SetTop(CC.Sprite,CC.Y);
@@ -443,7 +451,7 @@ class BattleMode
                         Canvas.SetTop(CC.Sprite,CC.Y);
                         wave = random.Next(1,2);
                     }
-            }
+                }
             
             // Timers
             
@@ -577,6 +585,7 @@ class BattleMode
                 {
                     Enemy1.hp = Enemy1.hp - 20;
                     BattleFlag = true;
+                    Console.WriteLine("Attack"+" "+BattleFlag+" "+wave);
                 }
                 if (buttonselected == 1)
                 {

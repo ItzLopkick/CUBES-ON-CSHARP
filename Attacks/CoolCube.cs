@@ -29,7 +29,6 @@ public class Attack2
     }
     public void Apear(double ArenaPhysX,double ArenaPhysY,double ArenaPhysX2,double ArenaPhysY2)
     {
-        Timer timer = new Timer(1000);
         this.IsApear = true;
         this.Agresive = false;
         Random random = new Random();
@@ -37,39 +36,10 @@ public class Attack2
         this.X2 = this.X+this.Width;
         this.Y = random.Next(Convert.ToInt32(ArenaPhysY),Convert.ToInt32(ArenaPhysY2-this.Height));
         this.Y2 = this.Y+this.Height;
-
-        while (timer.DoAction == false)
-        {
-            if (timer.Time%100 == 0)
-            {
-                this.Sprite.Opacity = this.Sprite.Opacity + 0.1f;
-                
-            }
-            timer.AddTime();
-        }
-        if (timer.DoAction == true)
-        {
-            this.Y = 9999;
-        }
     }
     public void Disapear()
     {
-        Timer timer = new Timer(1000);
         this.Agresive = false;
         this.IsApear = false;
-
-        while (timer.DoAction == false)
-        {
-            if (timer.Time%100 == 0)
-            {
-                this.Sprite.Opacity = this.Sprite.Opacity - 0.1f;
-                
-            }
-            timer.AddTime();
-        }
-        if (timer.DoAction == true)
-        {
-            this.Y = 9999;
-        }
     }
 }
