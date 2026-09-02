@@ -541,6 +541,10 @@ class BattleMode
             player.MoveRightFlag = false;
             player.MoveUpFlag = false;
             player.MoveDownFlag = false;
+            if (!(tick-buttonswipestamp >= 4))
+            {
+                return;
+            }
             if (InputSystem.keyboardbuttons.Contains(Key.Right))
             {
                 if (buttonselected > 3)
@@ -595,10 +599,6 @@ class BattleMode
     }
     void HandlingBattleButtons()
     {
-        if (!(tick-buttonswipestamp >= 6))
-        {
-            return;
-        }
         if (buttonselected == 0)
         {
             AttackBtn.Sprite.Source = new BitmapImage(new Uri("assets/Buttons/Attackbtn/AttackBtn2.png",UriKind.Relative));
