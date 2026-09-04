@@ -389,8 +389,6 @@ class BattleMode
                         wave = random.Next(1,2);
                     }
                 }
-                
-                }
                 if (wave == 2)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -398,6 +396,7 @@ class BattleMode
                     Console.ForegroundColor = ConsoleColor.Black;
                     if (attackSettings.attackTime == 0)
                     {
+                        attackSettings.attacklength = 10*100;
                         Console.WriteLine("Aoo");
                         CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
                         Canvas.SetLeft(CC.Sprite,CC.X);
@@ -433,11 +432,11 @@ class BattleMode
                     if (CC.IsApear == false)
                     {
                         if (attackSettings.attackTime%70 == 0)
-                            {
-                                CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
-                                Canvas.SetLeft(CC.Sprite,CC.X);
-                                Canvas.SetTop(CC.Sprite,CC.Y);
-                            }
+                        {
+                            CC.Apear(arena.physX,arena.physY,arena.physX2,arena.physY2);
+                            Canvas.SetLeft(CC.Sprite,CC.X);
+                            Canvas.SetTop(CC.Sprite,CC.Y);
+                        }
                     }
                     attackSettings.attackTime = attackSettings.attackTime + 1;
                     if (attackSettings.attackTime >= attackSettings.attacklength)
@@ -452,7 +451,7 @@ class BattleMode
                         wave = random.Next(1,2);
                     }
                 }
-            
+            }
             // Timers
             
 

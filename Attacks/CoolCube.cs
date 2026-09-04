@@ -39,6 +39,10 @@ public class Attack2
     }
     public void Disapear()
     {
+        this.X = 9999;
+        this.X2 = 9999;
+        this.Y = 9999;
+        this.Y2 = 9999;
         this.Agresive = false;
         this.IsApear = false;
     }
